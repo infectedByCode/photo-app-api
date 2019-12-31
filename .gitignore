@@ -2,3 +2,4 @@ node_modules/
 user-stories.md
 database_schema.md
 user-generator.js
+knexfile.js
