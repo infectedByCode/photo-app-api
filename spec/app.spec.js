@@ -29,8 +29,8 @@ describe('app.js', () => {
           .get('/api/auth/signup')
           .send(postRequest)
           .expect(201)
-          .then(data => {
-            expect(data).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
+          .then(({ body: { user } }) => {
+            expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
           });
       });
     });
