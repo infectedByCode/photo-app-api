@@ -9,7 +9,7 @@ exports.validateEmail = email => {
 exports.validateStringInput = str => {
   str = str.trim();
 
-  if (!str.length) return false;
+  if (!str.length || str === undefined) return false;
 
   const validCharacters = /([^A-Z\d])/gi;
 
@@ -18,6 +18,6 @@ exports.validateStringInput = str => {
 
 exports.validateQuery = str => {
   str = str.trim();
-  if (!str.length) return false;
+  if (!str.length || str === undefined) return false;
   return !/[^a-z\ ]/gi.test(str);
 };
