@@ -96,6 +96,11 @@ describe('app.js', () => {
               expect(user.email).to.equal('newemail@email.com');
             });
         });
+        it.only('DELETE:204, removes user by their username', () => {
+          return request(app)
+            .delete('/api/users/Christiana74')
+            .expect(204);
+        });
         describe('ERRORS /users:/:username', () => {
           it('GET:400, when username input is not valid', () => {
             return request(app)
@@ -159,7 +164,7 @@ describe('app.js', () => {
               });
           });
           it('STATUS:405, when use attempts an invalid method', () => {
-            const invalidMethods = ['post', 'put', 'delete'];
+            const invalidMethods = ['post', 'put'];
 
             const methodPromises = invalidMethods.map(method => {
               return request(app)
