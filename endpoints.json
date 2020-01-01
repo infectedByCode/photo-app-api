@@ -1,0 +1,113 @@
+{
+  "GET /api": {
+    "description": "serves up a json representation of all the available endpoints of the api"
+  },
+  "POST /api/auth/signup": {
+    "description": "creates a new users in the database after going through firebase authentication",
+    "examplePostData": {
+      "user_id": "b7bc7fd4-060a-4bb0-a3da-d0f98c0szf92k",
+      "first_name": "Fred",
+      "last_name": "Potter",
+      "username": "FreddieStar",
+      "email": "freddie@gmail.com"
+    },
+    "exampleResponse": {
+      "user_id": "b7bc7fd4-060a-4bb0-a3da-d0f98c0szf92k",
+      "first_name": "Fred",
+      "last_name": "Potter",
+      "username": "FreddieStar",
+      "email": "freddie@gmail.com",
+      "created_at": "2020-01-01 19:03:36"
+    },
+    "GET /api/users": {
+      "description": "serves an array of all users and user count",
+      "queries": ["limit"],
+      "exampleResponse": {
+        "userData": {
+          "users": [
+            {
+              "user_id": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+              "first_name": "Evangeline",
+              "last_name": "Hyatt",
+              "username": "MattieBorer",
+              "email": "Mara_Keeling20@yahoo.com",
+              "created_at": "2020-01-01T19:03:36.745Z"
+            },
+            {
+              "user_id": "fa0963c2-ec9f-4180-9256-0bd756114e90",
+              "first_name": "Hettie",
+              "last_name": "Bode",
+              "username": "EthaAbernathy66",
+              "email": "Mellie13@gmail.com",
+              "created_at": "2020-01-01T19:03:36.745Z"
+            },
+            {
+              "user_id": "1d1080a5-9ebd-4631-9001-9d090978bd94",
+              "first_name": "Clifford",
+              "last_name": "Schaefer",
+              "username": "LornaHeller",
+              "email": "Jailyn_Hilll@gmail.com",
+              "created_at": "2020-01-01T19:03:36.745Z"
+            },
+            {
+              "user_id": "9cb73dc7-f7d5-4309-ab23-d3787cdbe2a9",
+              "first_name": "Aditya",
+              "last_name": "Reilly",
+              "username": "LanceGislason",
+              "email": "Donnie.MacGyver30@gmail.com",
+              "created_at": "2020-01-01T19:03:36.745Z"
+            },
+            {
+              "user_id": "e40e752a-3230-4758-a118-b7f3537c1fd8",
+              "first_name": "Eunice",
+              "last_name": "Kshlerin",
+              "username": "Christiana74",
+              "email": "Tamia9@gmail.com",
+              "created_at": "2020-01-01T19:03:36.745Z"
+            }
+          ],
+          "total_users": "10"
+        }
+      }
+    },
+    "GET /api/users/:username": {
+      "description": "serves a user object by username",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+          "user_id": "a0b560a4-7d4c-43e1-a094-1d3528ef710f",
+          "first_name": "Justice",
+          "last_name": "Weissnat",
+          "username": "Rod72",
+          "email": "Floy_Gusikowski@gmail.com",
+          "created_at": "2020-01-01T19:03:36.745Z"
+        }
+      }
+    },
+    "PATCH /api/users/:username": {
+      "description": "updates user first_name, last_name or email",
+      "examplePatchRequest": {
+        "first_name": "newfirstname",
+        "last_name": "newlastname",
+        "email": "newemail@email.com"
+      },
+      "exampleResponse": {
+        "user": {
+          "user_id": "e40e752a-3230-4758-a118-b7f3537c1fd8",
+          "first_name": "newfirstname",
+          "last_name": "newlastname",
+          "username": "Christiana74",
+          "email": "newemail@email.com",
+          "created_at": "2020-01-01T19:03:36.745Z"
+        }
+      }
+    },
+    "DELETE /api/users/:username": {
+      "description": "deletes a user by their username",
+      "queries": [],
+      "exampleResponse": {
+        "status": 204
+      }
+    }
+  }
+}
