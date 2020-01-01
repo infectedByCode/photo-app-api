@@ -65,7 +65,7 @@ describe('app.js', () => {
         });
       });
     });
-    describe('/locations', () => {
+    describe.only('/locations', () => {
       describe('/', () => {
         it('GET:200, returns an array of all locations', () => {
           return request(app)
@@ -80,7 +80,7 @@ describe('app.js', () => {
         });
         it('GET:200, returns a filtered array based on continent, which has not default', () => {
           return request(app)
-            .get('/api/locations')
+            .get('/api/locations?continent=europe')
             .expect(200)
             .then(({ body: { locations } }) => {
               locations.forEach(location => {
