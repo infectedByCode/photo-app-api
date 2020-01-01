@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'test';
-
 const { expect } = require('chai');
 const request = require('supertest');
 
@@ -96,7 +94,7 @@ describe('app.js', () => {
               expect(user.email).to.equal('newemail@email.com');
             });
         });
-        it.only('DELETE:204, removes user by their username', () => {
+        it('DELETE:204, removes user by their username', () => {
           return request(app)
             .delete('/api/users/Christiana74')
             .expect(204);
@@ -161,6 +159,22 @@ describe('app.js', () => {
               .expect(404)
               .then(({ body: { msg } }) => {
                 expect(msg).to.equal('User can not be found');
+              });
+          });
+          it('POST:400, when username is invalid', () => {
+            return request(app)
+              .delete('/api/users/$$$NOTUSER$$$')
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
+              });
+          });
+          it.only('POST:404, when a valid username does not exist', () => {
+            return request(app)
+              .delete('/api/users/usernothere')
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('here');
               });
           });
           it('STATUS:405, when use attempts an invalid method', () => {
