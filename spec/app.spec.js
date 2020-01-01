@@ -78,6 +78,38 @@ describe('app.js', () => {
               expect(user.username).to.equal('Christiana74');
             });
         });
+        describe('ERRORS /users:/:username', () => {
+          it('GET:400, when username input is not valid', () => {
+            return request(app)
+              .get('/api/users/c9"INSERT"goal')
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Invalid input in text fields. Please try again.');
+              });
+          });
+          it('GET:404, when username is valid but not found', () => {
+            return request(app)
+              .get('/api/users/notreallyauser')
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('User can not be found');
+              });
+          });
+          it('STATUS:405, when use attempts an invalid method', () => {
+            const invalidMethods = ['post', 'put', 'patch', 'delete'];
+
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]('/api/users/Christiana74')
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('method not allowed');
+                });
+            });
+
+            return Promise.all(methodPromises);
+          });
+        });
       });
     });
   });
