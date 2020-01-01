@@ -107,7 +107,20 @@ describe('app.js', () => {
             );
         });
         describe('ERRORS /api/users', () => {
-          it('GET:', () => {});
+          it('GET:200, returns all users if limit query is invalid, i.e. not a digit', () => {
+            return request(app)
+              .get('/api/users?limit=9chan')
+              .expect(200)
+              .then(
+                ({
+                  body: {
+                    userData: { users }
+                  }
+                }) => {
+                  expect(users).to.have.lengthOf(10);
+                }
+              );
+          });
         });
       });
       describe('/:username', () => {
