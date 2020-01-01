@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const { expect } = require('chai');
-const { validateEmail } = require('../utils/utils');
+const { validateEmail, validateStringInput } = require('../utils/utils');
 
 describe('validateEmail', () => {
   it('returns false when an empty string is passed in', () => {
@@ -27,5 +27,21 @@ describe('validateEmail', () => {
 
     email = 'pete@gmail';
     expect(validateEmail(email)).to.equal(false);
+  });
+});
+
+describe('validateStringInput', () => {
+  it('returns false when an empty string is passed in', () => {
+    expect(validateStringInput('')).to.equal(false);
+  });
+  it('returns true when a valid string with only alphanumerical characters are input', () => {
+    expect(validateStringInput('Matthew')).to.equal(true);
+    expect(validateStringInput('StarLord2001')).to.equal(true);
+    expect(validateStringInput('PepeTheFrong')).to.equal(true);
+    expect(validateStringInput('1288Winner')).to.equal(true);
+  });
+  it('returns false when illegal charachers are input', () => {
+    expect(validateStringInput('Real user "DROP DATABASE"')).to.equal(false);
+    expect(validateStringInput('?%*')).to.equal(false);
   });
 });
