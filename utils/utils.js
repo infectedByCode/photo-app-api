@@ -15,3 +15,9 @@ exports.validateStringInput = str => {
 
   return !validCharacters.test(str);
 };
+
+exports.validateQuery = str => {
+  str = str.trim();
+  if (!str.length) return false;
+  return !/[^a-z\ ]/gi.test(str);
+};
