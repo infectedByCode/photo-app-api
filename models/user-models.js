@@ -53,12 +53,12 @@ exports.removeUserByUsername = ({ username }) => {
 };
 
 exports.fetchAllUsers = (limit = 5) => {
-  const isLimitValid = /\d/.test(limit);
+  const isLimitInvalid = /[^\d]/.test(limit);
 
   return connection('users')
     .select('*')
     .modify(query => {
-      if (isLimitValid) query.limit(limit);
+      if (!isLimitInvalid) query.limit(limit);
       return query;
     })
     .then(users => {
