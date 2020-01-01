@@ -67,5 +67,18 @@ describe('app.js', () => {
         });
       });
     });
+    describe('/users', () => {
+      describe('/:username', () => {
+        it('GET:200, returns a user by their username', () => {
+          return request(app)
+            .get('/api/users/Christiana74')
+            .expect(200)
+            .then(({ body: { user } }) => {
+              expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
+              expect(user.username).to.equal('Christiana74');
+            });
+        });
+      });
+    });
   });
 });
