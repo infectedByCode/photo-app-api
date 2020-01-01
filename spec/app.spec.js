@@ -121,6 +121,20 @@ describe('app.js', () => {
                 }
               );
           });
+          it('STATUS:405, when use attempts an invalid method', () => {
+            const invalidMethods = ['post', 'put', 'delete', 'patch'];
+
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]('/api/users')
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('method not allowed');
+                });
+            });
+
+            return Promise.all(methodPromises);
+          });
         });
       });
       describe('/:username', () => {
