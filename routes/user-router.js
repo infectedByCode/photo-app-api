@@ -3,6 +3,11 @@ const { getUserByUsername, patchUserByUsername, deleteUserByUsername } = require
 const { handle405Errors } = require('../errors');
 
 userRouter
+  .route('/')
+  .get(getAllUsers)
+  .all(handle405Errors);
+
+userRouter
   .route('/:username')
   .get(getUserByUsername)
   .patch(patchUserByUsername)
