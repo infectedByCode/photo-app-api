@@ -52,9 +52,15 @@ exports.removeUserByUsername = ({ username }) => {
   return connection('users').where('username', username);
 };
 
-exports.fetchAllUsers = () => {
+exports.fetchAllUsers = (limit = 5) => {
+  const isLimitValid = /\d/.test(limit);
+
   return connection('users')
     .select('*')
+    .modify(query => {
+      if (isLimitValid) query.limit(limit);
+      return query;
+    })
     .then(users => {
       const totalUsers = connection('users').count('* as total_users');
       return Promise.all([users, totalUsers]);

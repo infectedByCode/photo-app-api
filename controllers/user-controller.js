@@ -44,7 +44,9 @@ exports.deleteUserByUsername = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => {
-  fetchAllUsers()
+  const { limit } = req.query;
+
+  fetchAllUsers(limit)
     .then(userData => {
       const users = userData[0];
       const count = userData[1][0].total_users;
