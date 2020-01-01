@@ -80,9 +80,8 @@ describe('app.js', () => {
         });
         it('PATCH:200, updates user by username and serves up user.', () => {
           const patchRequest = {
-            first_name: 'Delphine',
-            last_name: 'newfirstname',
-            username: 'newlastname',
+            first_name: 'newfirstname',
+            last_name: 'newlastname',
             email: 'newemail@email.com'
           };
 
@@ -103,7 +102,7 @@ describe('app.js', () => {
               .get('/api/users/c9"INSERT"goal')
               .expect(400)
               .then(({ body: { msg } }) => {
-                expect(msg).to.equal('Invalid input in text fields. Please try again.');
+                expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
               });
           });
           it('GET:404, when username is valid but not found', () => {
@@ -114,8 +113,53 @@ describe('app.js', () => {
                 expect(msg).to.equal('User can not be found');
               });
           });
+          it('PATCH:400, when username is invalid', () => {
+            const patchRequest = {
+              first_name: 'newfirstname',
+              last_name: 'newlastname',
+              email: 'newemail@email.com'
+            };
+
+            return request(app)
+              .patch('/api/users/User"INSERT NEW DATA"HERE')
+              .send(patchRequest)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
+              });
+          });
+          it('PATCH:400, when input data is invalid', () => {
+            const patchRequest = {
+              first_name: 'myn@m3!$',
+              last_name: 'newlastname',
+              email: 'newemail@email.com'
+            };
+
+            return request(app)
+              .patch('/api/users/Christiana74')
+              .send(patchRequest)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Invalid input in form fields. Please only use alphanumeric characters.');
+              });
+          });
+          it('PATCH:404, when user is not found but inputs are valid', () => {
+            const patchRequest = {
+              first_name: 'Pete',
+              last_name: 'Chan',
+              email: 'PeteChan@gmail.com'
+            };
+
+            return request(app)
+              .patch('/api/users/Petechan1994')
+              .send(patchRequest)
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('User can not be found');
+              });
+          });
           it('STATUS:405, when use attempts an invalid method', () => {
-            const invalidMethods = ['post', 'put', 'patch', 'delete'];
+            const invalidMethods = ['post', 'put', 'delete'];
 
             const methodPromises = invalidMethods.map(method => {
               return request(app)
