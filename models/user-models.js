@@ -41,3 +41,13 @@ exports.updateUserByUsername = ({ username }, userData) => {
     .where('username', username)
     .update({ email, first_name: inputs.first_name, last_name: inputs.last_name }, '*');
 };
+
+exports.removeUserByUsername = ({ username }) => {
+  const isValidUsername = validateStringInput(username);
+
+  if (!isValidUsername) {
+    return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
+  }
+
+  return connection('users').where('username', username);
+};
