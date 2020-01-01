@@ -78,6 +78,25 @@ describe('app.js', () => {
               expect(user.username).to.equal('Christiana74');
             });
         });
+        it('PATCH:200, updates user by username and serves up user.', () => {
+          const patchRequest = {
+            first_name: 'Delphine',
+            last_name: 'newfirstname',
+            username: 'newlastname',
+            email: 'newemail@email.com'
+          };
+
+          return request(app)
+            .patch('/api/users/Christiana74')
+            .send(patchRequest)
+            .expect(200)
+            .then(({ body: { user } }) => {
+              expect(user.username).to.equal('Christiana74');
+              expect(user.first_name).to.equal('newfirstname');
+              expect(user.last_name).to.equal('newlastname');
+              expect(user.email).to.equal('newemail@email.com');
+            });
+        });
         describe('ERRORS /users:/:username', () => {
           it('GET:400, when username input is not valid', () => {
             return request(app)
