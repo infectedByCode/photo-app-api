@@ -5,3 +5,13 @@ exports.validateEmail = email => {
 
   return emailRegex.test(String(email).toLowerCase());
 };
+
+exports.validateStringInput = str => {
+  str = str.trim();
+
+  if (!str.length) return false;
+
+  const validCharacters = /([^A-Z\d])/gi;
+
+  return !validCharacters.test(str);
+};
