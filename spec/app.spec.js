@@ -71,12 +71,29 @@ describe('app.js', () => {
           return request(app)
             .get('/api/users')
             .expect(200)
-            .then(({ body: { users } }) => {
-              expect(users).to.be.an('array');
-              users.forEach(user => {
-                expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
-              });
+            .then(
+              ({
+                body: {
+                  userData: { users }
+                }
+              }) => {
+                expect(users).to.be.an('array');
+                users.forEach(user => {
+                  expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
+                });
+              }
+            );
+        });
+        it('GET:200, returns a totol count of all users', () => {
+          return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then(({ body: { userData } }) => {
+              expect(userData).to.have.key(['total_users', 'users']);
             });
+        });
+        describe('ERRORS /api/users', () => {
+          it('GET:', () => {});
         });
       });
       describe('/:username', () => {
