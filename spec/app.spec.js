@@ -26,7 +26,7 @@ describe('app.js', () => {
         };
 
         return request(app)
-          .get('/api/auth/signup')
+          .post('/api/auth/signup')
           .send(postRequest)
           .expect(201)
           .then(({ body: { user } }) => {
@@ -44,12 +44,26 @@ describe('app.js', () => {
           };
 
           return request(app)
-            .get('/api/auth/signup')
+            .post('/api/auth/signup')
             .send(postRequest)
             .expect(400)
             .then(({ body: { msg } }) => {
               expect(msg).to.equal('duplicate key value violates unique constraint "users_pkey"');
             });
+        });
+        it('STATUS:405, when use attempts an invalid method', () => {
+          const invalidMethods = ['get', 'put', 'patch', 'delete'];
+
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]('/api/auth/signup')
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('method not allowed');
+              });
+          });
+
+          return Promise.all(methodPromises);
         });
       });
     });
