@@ -92,6 +92,20 @@ describe('app.js', () => {
               expect(userData).to.have.key(['total_users', 'users']);
             });
         });
+        it('GET:200, returns a limited list of users with default of 5', () => {
+          return request(app)
+            .get('/api/users?limit=7')
+            .expect(200)
+            .then(
+              ({
+                body: {
+                  userData: { users }
+                }
+              }) => {
+                expect(users).to.have.lengthOf(7);
+              }
+            );
+        });
         describe('ERRORS /api/users', () => {
           it('GET:', () => {});
         });
