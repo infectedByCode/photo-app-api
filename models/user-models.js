@@ -51,3 +51,12 @@ exports.removeUserByUsername = ({ username }) => {
 
   return connection('users').where('username', username);
 };
+
+exports.fetchAllUsers = () => {
+  return connection('users')
+    .select('*')
+    .then(users => {
+      const totalUsers = connection('users').count('* as total_users');
+      return Promise.all([users, totalUsers]);
+    });
+};

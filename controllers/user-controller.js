@@ -1,4 +1,9 @@
-const { fetchUserByUsername, updateUserByUsername, removeUserByUsername } = require('../models/user-models');
+const {
+  fetchUserByUsername,
+  updateUserByUsername,
+  removeUserByUsername,
+  fetchAllUsers
+} = require('../models/user-models');
 
 exports.getUserByUsername = (req, res, next) => {
   const username = req.params;
@@ -34,6 +39,17 @@ exports.deleteUserByUsername = (req, res, next) => {
           else res.sendStatus(204);
         })
         .catch(next);
+    })
+    .catch(next);
+};
+
+exports.getAllUsers = (req, res, next) => {
+  fetchAllUsers()
+    .then(userData => {
+      const users = userData[0];
+      const count = userData[1][0].total_users;
+
+      res.status(200).send({ userData: { users, total_users: count } });
     })
     .catch(next);
 };

@@ -1,5 +1,10 @@
 const userRouter = require('express').Router();
-const { getUserByUsername, patchUserByUsername, deleteUserByUsername } = require('../controllers/user-controller');
+const {
+  getUserByUsername,
+  patchUserByUsername,
+  deleteUserByUsername,
+  getAllUsers
+} = require('../controllers/user-controller');
 const { handle405Errors } = require('../errors');
 
 userRouter
