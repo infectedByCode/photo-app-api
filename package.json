@@ -5,10 +5,11 @@
   "main": "app.js",
   "scripts": {
     "test": "npm test",
-    "setup-dbs": "mysql -u root -p < ./db/setup.sql",
+    "setup-dbs": "psql -f ./db/setup.sql",
     "migrate-make": "knex migrate:make",
     "migrate-latest": "knex migrate:latest",
-    "migrate-rollback": "knex migrate:rollback"
+    "migrate-rollback": "knex migrate:rollback",
+    "seed": "knex seed:run"
   },
   "author": "Matthew Daley",
   "license": "ISC",
@@ -16,7 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.20.6",
-    "mysql": "^2.17.1"
+    "pg": "^7.17.0"
   },
   "devDependencies": {
     "faker": "^4.1.0"
