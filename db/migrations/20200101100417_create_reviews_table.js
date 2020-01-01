@@ -4,7 +4,7 @@ exports.up = function(knex) {
     reviewsTable.string('review_title').notNullable();
     reviewsTable.text('review_body').notNullable();
     reviewsTable.string('image_url').notNullable();
-    reviewsTable.integer('votes').defaultTo(0);
+    reviewsTable.integer('vote_count').defaultTo(0);
     reviewsTable
       .string('author')
       .references('users.user_id')

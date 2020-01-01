@@ -5,15 +5,14 @@ exports.seed = function(knex) {
     .rollback()
     .then(() => knex.migrate.latest())
     .then(() => {
-      const usersInsertions = knex('users')
+      return knex('users')
         .insert(userData)
         .returning('*');
-
-      const locationsInsertion = knex('locations')
+    })
+    .then(() => {
+      return knex('locations')
         .insert(locationData)
         .returning('*');
-
-      return Promise.all(usersInsertions, locationsInsertion);
     })
     .then(() => {
       return knex('reviews')
