@@ -65,6 +65,18 @@ describe('app.js', () => {
         });
       });
     });
+    describe('/locations', () => {
+      describe('/', () => {
+        it('GET:200, returns an array of all locations', () => {
+          return request(app)
+            .get('/api/locations')
+            .expect(200)
+            .then(({ body: { locations } }) => {
+              expect(locations).to.be.an('array');
+            });
+        });
+      });
+    });
     describe('/users', () => {
       describe('/', () => {
         it('GET:200, returns all users in the database', () => {
