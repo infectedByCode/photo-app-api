@@ -73,6 +73,19 @@ describe('app.js', () => {
             .expect(200)
             .then(({ body: { locations } }) => {
               expect(locations).to.be.an('array');
+              locations.forEach(location => {
+                expect(location).to.have.keys(['location_id', 'city', 'country', 'continent']);
+              });
+            });
+        });
+        it('GET:200, returns a filtered array based on continent, which has not default', () => {
+          return request(app)
+            .get('/api/locations')
+            .expect(200)
+            .then(({ body: { locations } }) => {
+              locations.forEach(location => {
+                expect(location['continent']).to.equal('Europe');
+              });
             });
         });
       });
