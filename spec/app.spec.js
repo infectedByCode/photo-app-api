@@ -16,7 +16,7 @@ describe('app.js', () => {
   });
   describe('/api', () => {
     describe('/auth/signup', () => {
-      it('creates a new user and serves up new user', () => {
+      it('POST:201, creates a new user and serves up new user', () => {
         const postRequest = {
           user_id: 'b7bc7fd4-060a-4bb0-a3da-d0f98c0szf92k',
           first_name: 'Fred',
@@ -32,6 +32,25 @@ describe('app.js', () => {
           .then(({ body: { user } }) => {
             expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
           });
+      });
+      describe('ERRORS /api/auth/signup', () => {
+        it('POST:400, when user_id already exists', () => {
+          const postRequest = {
+            user_id: 'b7bc7fd4-060a-4bb0-a3da-d0f98c06fd75',
+            first_name: 'Delphine',
+            last_name: 'Hansen',
+            username: 'Allie61',
+            email: 'Liliane.Koch71@hotmail.com'
+          };
+
+          return request(app)
+            .get('/api/auth/signup')
+            .send(postRequest)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('duplicate key value violates unique constraint "users_pkey"');
+            });
+        });
       });
     });
   });
