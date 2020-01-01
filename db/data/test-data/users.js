@@ -3,28 +3,28 @@ module.exports = [
     user_id: '3c9f50cb-da22-4a7d-b105-246b6f14abf4',
     first_name: 'Evangeline',
     last_name: 'Hyatt',
-    username: 'Mattie.Borer',
+    username: 'MattieBorer',
     email: 'Mara_Keeling20@yahoo.com'
   },
   {
     user_id: 'fa0963c2-ec9f-4180-9256-0bd756114e90',
     first_name: 'Hettie',
     last_name: 'Bode',
-    username: 'Etha_Abernathy66',
+    username: 'EthaAbernathy66',
     email: 'Mellie13@gmail.com'
   },
   {
     user_id: '1d1080a5-9ebd-4631-9001-9d090978bd94',
     first_name: 'Clifford',
     last_name: 'Schaefer',
-    username: 'Lorna.Heller',
+    username: 'LornaHeller',
     email: 'Jailyn_Hilll@gmail.com'
   },
   {
     user_id: '9cb73dc7-f7d5-4309-ab23-d3787cdbe2a9',
     first_name: 'Aditya',
     last_name: 'Reilly',
-    username: 'Lance_Gislason',
+    username: 'LanceGislason',
     email: 'Donnie.MacGyver30@gmail.com'
   },
   {
@@ -38,14 +38,14 @@ module.exports = [
     user_id: '77592ea3-4013-4829-a1fd-ab8e03da53ab',
     first_name: 'Missouri',
     last_name: 'Runolfsson',
-    username: 'Myriam_Lowe',
+    username: 'MyriamLowe',
     email: 'Clay_Gorczany@yahoo.com'
   },
   {
     user_id: 'de4dffd5-5bd8-47b5-8a5a-7db1efc06a4c',
     first_name: 'Kip',
     last_name: 'Streich',
-    username: 'Olin.Mitchell94',
+    username: 'OlinMitchell94',
     email: 'German85@yahoo.com'
   },
   {
