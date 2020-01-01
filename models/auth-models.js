@@ -6,7 +6,9 @@ exports.createUser = userData => {
 
   isEmailValid = validateEmail(email);
 
-  if (isEmailValid) {
-    return connection('users').insert({ user_id, first_name, last_name, username, email }, '*');
+  if (!isEmailValid) {
+    return Promise.reject({ status: 400, msg: 'email is not valid' });
   }
+
+  return connection('users').insert({ user_id, first_name, last_name, username, email }, '*');
 };
