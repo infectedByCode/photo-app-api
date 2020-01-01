@@ -8,11 +8,13 @@ exports.up = function(knex) {
     reviewsTable
       .string('author')
       .references('users.user_id')
-      .notNullable();
+      .notNullable()
+      .onDelete('cascade');
     reviewsTable
       .integer('location_id')
       .references('locations.location_id')
-      .notNullable();
+      .notNullable()
+      .onDelete('cascade');
     reviewsTable.timestamp('created_at').defaultTo(knex.fn.now());
   });
 };
