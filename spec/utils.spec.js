@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const { expect } = require('chai');
-const { validateEmail, validateStringInput } = require('../utils/utils');
+const { validateEmail, validateStringInput, validateQuery } = require('../utils/utils');
 
 describe('validateEmail', () => {
   it('returns false when an empty string is passed in', () => {
@@ -43,5 +43,18 @@ describe('validateStringInput', () => {
   it('returns false when illegal charachers are input', () => {
     expect(validateStringInput('Real user "DROP DATABASE"')).to.equal(false);
     expect(validateStringInput('?%*')).to.equal(false);
+  });
+});
+
+describe('validateQuery', () => {
+  it('returns false when an empty string is passed in', () => {
+    expect(validateQuery('')).to.equal(false);
+  });
+  it('returns true when a valid query is passed in', () => {
+    expect(validateQuery('europe')).to.equal(true);
+    expect(validateQuery('North America')).to.equal(true);
+  });
+  it('returns false when an invalid query is passed in', () => {
+    expect(validateQuery('eur0p3')).to.equal(false);
   });
 });
