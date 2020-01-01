@@ -28,7 +28,12 @@ exports.deleteUserByUsername = (req, res, next) => {
 
   removeUserByUsername(username)
     .then(() => {
-      res.sendStatus(204);
+      fetchUserByUsername(username)
+        .then(user => {
+          if (!user) return Promise.reject({ status: 404, msg: 'User can not be found' });
+          else res.sendStatus(204);
+        })
+        .catch(next);
     })
     .catch(next);
 };
