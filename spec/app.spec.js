@@ -66,6 +66,19 @@ describe('app.js', () => {
       });
     });
     describe('/users', () => {
+      describe('/', () => {
+        it('GET:200, returns all users in the database', () => {
+          return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then(({ body: { users } }) => {
+              expect(users).to.be.an('array');
+              users.forEach(user => {
+                expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
+              });
+            });
+        });
+      });
       describe('/:username', () => {
         it('GET:200, returns a user by their username', () => {
           return request(app)
@@ -169,12 +182,12 @@ describe('app.js', () => {
                 expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
               });
           });
-          it.only('POST:404, when a valid username does not exist', () => {
+          it('POST:404, when a valid username does not exist', () => {
             return request(app)
               .delete('/api/users/usernothere')
               .expect(404)
               .then(({ body: { msg } }) => {
-                expect(msg).to.equal('here');
+                expect(msg).to.equal('User can not be found');
               });
           });
           it('STATUS:405, when use attempts an invalid method', () => {
