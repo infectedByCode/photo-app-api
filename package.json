@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "setup-dbs": "mysql -u root -p < ./db/setup.sql"
   },
   "author": "Matthew Daley",
   "license": "ISC",
