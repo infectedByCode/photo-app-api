@@ -88,6 +88,21 @@ describe('app.js', () => {
               });
             });
         });
+        it.only('POST:201, adds a new location to DB if does not already exist then serves up new locations', () => {
+          const postRequest = {
+            city: 'Liverpool',
+            country: 'United Kingdom',
+            continent: 'Europe'
+          };
+
+          return request(app)
+            .post('/api/locations')
+            .send(postRequest)
+            .expect(201)
+            .then(({ body: { location } }) => {
+              expect(location).to.eql({ ...postRequest, location_id: 21 });
+            });
+        });
       });
       describe('ERRORS /api/locations', () => {
         it('GET:200, returns unfiltered array if query is invalid in any way', () => {
