@@ -88,7 +88,7 @@ describe('app.js', () => {
               });
             });
         });
-        it.only('POST:201, adds a new location to DB if does not already exist then serves up new locations', () => {
+        it('POST:201, adds a new location to DB if does not already exist then serves up new locations', () => {
           const postRequest = {
             city: 'Liverpool',
             country: 'United Kingdom',
@@ -111,6 +111,34 @@ describe('app.js', () => {
             .expect(200)
             .then(({ body: { locations } }) => {
               expect(locations).to.have.lengthOf(20);
+            });
+        });
+        it('POST:400, when any data is not valid', () => {
+          const postRequest = {
+            city: 'Liverp@@l',
+            country: 'United Kingdom',
+            continent: 'Europe'
+          };
+
+          return request(app)
+            .post('/api/locations')
+            .send(postRequest)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Please only input alphanumeric characters and spaces.');
+            });
+        });
+        it('POST:400, when data is missing', () => {
+          const postRequest = {
+            city: 'Liverpool'
+          };
+
+          return request(app)
+            .post('/api/locations')
+            .send(postRequest)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('null value in column "country" violates not-null constraint');
             });
         });
       });
