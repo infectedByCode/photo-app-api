@@ -5,7 +5,6 @@ exports.getAllLocations = (req, res, next) => {
 
   fetchAllLocations(continent)
     .then(locations => {
-      console.log(locations);
       res.status(200).send({ locations });
     })
     .catch(next);

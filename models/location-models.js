@@ -2,6 +2,7 @@ const connection = require('../db/connection');
 const { validateQuery } = require('../utils/utils');
 
 exports.fetchAllLocations = continent => {
+  const continents = ['Europe', 'North American', 'South America', 'Asia', 'Oceania', 'Africa', 'Antarctica'];
   let isValidQuery;
 
   if (continent) {
@@ -12,7 +13,7 @@ exports.fetchAllLocations = continent => {
   return connection('locations')
     .select('*')
     .modify(query => {
-      if (isValidQuery) query.where('continent', continent);
+      if (isValidQuery && continents.includes(continent)) query.where('continent', continent);
       return query;
     });
 };
