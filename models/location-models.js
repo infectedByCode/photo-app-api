@@ -1,5 +1,5 @@
 const connection = require('../db/connection');
-const { validateQuery } = require('../utils/utils');
+const { validateQuery, validateStringInput } = require('../utils/utils');
 
 exports.fetchAllLocations = continent => {
   const continents = ['Europe', 'North American', 'South America', 'Asia', 'Oceania', 'Africa', 'Antarctica'];
@@ -19,3 +19,16 @@ exports.fetchAllLocations = continent => {
 };
 
 // post location, util function to capitalise first letter
+exports.createLocation = locationData => {
+  let isDataValid = Object.values(locationData).every(data => {
+    return validateStringInput(data);
+  });
+
+  const { city, country, continent } = locationData;
+
+  if (!isDataValid) {
+    return Promise.reject({ status: 400, msg: 'Please only input alphanumeric characters and spaces.' });
+  }
+
+  return connection('locations').insert({ city, country, continent }, '*');
+};
