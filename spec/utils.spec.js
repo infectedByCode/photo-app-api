@@ -34,11 +34,12 @@ describe('validateStringInput', () => {
   it('returns false when an empty string is passed in', () => {
     expect(validateStringInput('')).to.equal(false);
   });
-  it('returns true when a valid string with only alphanumerical characters are input', () => {
+  it('returns true when a valid string with only alphanumerical characters are input and spaces', () => {
     expect(validateStringInput('Matthew')).to.equal(true);
     expect(validateStringInput('StarLord2001')).to.equal(true);
     expect(validateStringInput('PepeTheFrong')).to.equal(true);
     expect(validateStringInput('1288Winner')).to.equal(true);
+    expect(validateStringInput('United Kingdom')).to.equal(true);
   });
   it('returns false when illegal charachers are input', () => {
     expect(validateStringInput('Real user "DROP DATABASE"')).to.equal(false);

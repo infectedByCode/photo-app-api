@@ -11,7 +11,7 @@ exports.validateStringInput = str => {
 
   if (!str.length || str === undefined) return false;
 
-  const validCharacters = /([^A-Z\d])/gi;
+  const validCharacters = /([^A-Z\d\ ])/gi;
 
   return !validCharacters.test(str);
 };
