@@ -65,7 +65,7 @@ describe('app.js', () => {
         });
       });
     });
-    describe.only('/locations', () => {
+    describe('/locations', () => {
       describe('/', () => {
         it('GET:200, returns an array of all locations', () => {
           return request(app)
@@ -86,6 +86,16 @@ describe('app.js', () => {
               locations.forEach(location => {
                 expect(location['continent']).to.equal('Europe');
               });
+            });
+        });
+      });
+      describe('ERRORS /api/locations', () => {
+        it('GET:200, returns unfiltered array if query is invalid in any way', () => {
+          return request(app)
+            .get('/api/locations?continent=BADREQUEST')
+            .expect(200)
+            .then(({ body: { locations } }) => {
+              expect(locations).to.have.lengthOf(20);
             });
         });
       });
