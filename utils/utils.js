@@ -16,6 +16,16 @@ exports.validateStringInput = str => {
   return !validCharacters.test(str);
 };
 
+exports.validateUser = str => {
+  str = str.trim();
+
+  if (!str.length || str === undefined) return false;
+
+  const validCharacters = /([^A-Z\d])/gi;
+
+  return !validCharacters.test(str);
+};
+
 exports.validateQuery = str => {
   str = str.trim();
   if (!str.length || str === undefined) return false;

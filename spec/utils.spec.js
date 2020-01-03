@@ -7,7 +7,8 @@ const {
   validateQuery,
   formatLocation,
   validateURL,
-  validateAuthorUUID
+  validateAuthorUUID,
+  validateUser
 } = require('../utils/utils');
 
 describe('validateEmail', () => {
@@ -51,6 +52,22 @@ describe('validateStringInput', () => {
   it('returns false when illegal charachers are input', () => {
     expect(validateStringInput('Real user ^^')).to.equal(false);
     expect(validateStringInput('?%*')).to.equal(false);
+  });
+});
+
+describe('validateUser', () => {
+  it('returns false when an empty string is passed in', () => {
+    expect(validateUser('')).to.equal(false);
+  });
+  it('returns true when a valid string with only alphanumerical characters are input', () => {
+    expect(validateUser('Matthew')).to.equal(true);
+    expect(validateUser('StarLord2001')).to.equal(true);
+    expect(validateUser('PepeTheFrong')).to.equal(true);
+    expect(validateUser('1288Winner')).to.equal(true);
+  });
+  it('returns false when illegal charachers are input', () => {
+    expect(validateUser('Real user ^^')).to.equal(false);
+    expect(validateUser('?%*')).to.equal(false);
   });
 });
 
