@@ -141,6 +141,21 @@ describe('app.js', () => {
               expect(msg).to.equal('null value in column "country" violates not-null constraint');
             });
         });
+        it.only('POST:400, when the location already exists in the db', () => {
+          const postRequest = {
+            city: 'Hue',
+            country: 'Vietnam',
+            continent: 'Asia'
+          };
+
+          return request(app)
+            .post('/api/locations')
+            .send(postRequest)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Location already exists.');
+            });
+        });
       });
     });
     describe('/users', () => {
