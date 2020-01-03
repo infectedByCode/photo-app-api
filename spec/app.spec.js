@@ -241,6 +241,59 @@ describe('app.js', () => {
           return Promise.all(methodPromises);
         });
       });
+      describe.only('/comments', () => {
+        it('GET:200, returns an array of comments for a review', () => {
+          return request(app)
+            .get('/api/reviews/18/comments')
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).to.be.an('array');
+            });
+        });
+        it('GET:200, each comment has the relevant keys', () => {
+          return request(app)
+            .get('/api/reviews/18/comments')
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              comments.forEach(comment => {
+                expect(comment).to.have.keys(['comment_id', 'comment_body', 'review_id', 'author', 'created_at']);
+                expect(comment.review_id).to.equal(18);
+              });
+            });
+        });
+        describe('ERRORS /api/reviews/:review_id/comments', () => {
+          it('GET:400, when review_id is invalid', () => {
+            return request(app)
+              .get('/api/reviews/not-a-num/comments')
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Please enter a valid review_id');
+              });
+          });
+          it('GET:404, when review_id is valid but not found', () => {
+            return request(app)
+              .get('/api/reviews/9000/comments')
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Review not found');
+              });
+          });
+          it('STATUS:405, when use attempts an invalid method', () => {
+            const invalidMethods = ['put', 'patch', 'delete'];
+
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]('/api/reviews/1/comments')
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('method not allowed');
+                });
+            });
+
+            return Promise.all(methodPromises);
+          });
+        });
+      });
     });
     describe('/locations', () => {
       describe('/', () => {
