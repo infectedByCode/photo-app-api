@@ -45,7 +45,8 @@ exports.createLocation = locationData => {
     })
     .then(location => {
       if (!location.length) return connection('locations').insert({ city, country, continent }, '*');
-      else return Promise.reject({ status: 400, msg: 'Location already exists.' });
+      else
+        return Promise.reject({ status: 400, msg: 'Location already exists.', location_id: location[0].location_id });
     });
 };
 
