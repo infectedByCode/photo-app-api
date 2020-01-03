@@ -261,6 +261,23 @@ describe('app.js', () => {
               });
             });
         });
+        it('POST:201, creates a new comment for a review', () => {
+          const postRequest = {
+            comment_body: 'Wow. Looks amazing.',
+            author: 'a0b560a4-7d4c-43e1-a094-1d3528ef710f'
+          };
+
+          return request(app)
+            .post('/api/reviews/1/comments')
+            .send(postRequest)
+            .expect(201)
+            .then(({ body: { comment } }) => {
+              expect(comment).to.have.keys(['comment_id', 'comment_body', 'review_id', 'author', 'created_at']);
+              expect(comment.comment_body).to.equal('Wow. Looks amazing.');
+              expect(comment.author).to.equal('a0b560a4-7d4c-43e1-a094-1d3528ef710f');
+              expect(comment.review_id).to.equal(1);
+            });
+        });
         describe('ERRORS /api/reviews/:review_id/comments', () => {
           it('GET:400, when review_id is invalid', () => {
             return request(app)
@@ -276,6 +293,34 @@ describe('app.js', () => {
               .expect(404)
               .then(({ body: { msg } }) => {
                 expect(msg).to.equal('Review not found');
+              });
+          });
+          it('POST:400, when comment body is invalid', () => {
+            const postRequest = {
+              comment_body: 'Wow. L@@ks amaz***.',
+              author: 'a0b560a4-7d4c-43e1-a094-1d3528ef710f'
+            };
+
+            return request(app)
+              .post('/api/reviews/1/comments')
+              .send(postRequest)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Invalid characters in the comment_body or author uuid not valid.');
+              });
+          });
+          it('POST:400, when the UUID is not valid.', () => {
+            const postRequest = {
+              comment_body: 'Wow. Looks amazing.',
+              author: 'a0b560a4-1d3528ef710f'
+            };
+
+            return request(app)
+              .post('/api/reviews/1/comments')
+              .send(postRequest)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('Invalid characters in the comment_body or author uuid not valid.');
               });
           });
           it('STATUS:405, when use attempts an invalid method', () => {
