@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const { expect } = require('chai');
-const { validateEmail, validateStringInput, validateQuery } = require('../utils/utils');
+const { validateEmail, validateStringInput, validateQuery, formatLocation } = require('../utils/utils');
 
 describe('validateEmail', () => {
   it('returns false when an empty string is passed in', () => {
@@ -57,5 +57,19 @@ describe('validateQuery', () => {
   });
   it('returns false when an invalid query is passed in', () => {
     expect(validateQuery('eur0p3')).to.equal(false);
+  });
+});
+
+describe.only('formatLocation', () => {
+  it('returns an empty string when passed one', () => {
+    expect(formatLocation('')).to.equal('');
+  });
+  it('returns capitalised location data when name is one word', () => {
+    expect(formatLocation('liVerPool')).to.equal('Liverpool');
+    expect(formatLocation('hue')).to.equal('Hue');
+  });
+  it('returns capitalised location data when the name is more than one word', () => {
+    expect(formatLocation('united kingdom')).to.equal('United Kingdom');
+    expect(formatLocation('SOUTH AMERIca')).to.equal('South America');
   });
 });

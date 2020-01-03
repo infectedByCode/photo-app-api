@@ -21,3 +21,12 @@ exports.validateQuery = str => {
   if (!str.length || str === undefined) return false;
   return !/[^a-z\ ]/gi.test(str);
 };
+
+exports.formatLocation = str => {
+  str = str.trim();
+
+  return str
+    .split(' ')
+    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
