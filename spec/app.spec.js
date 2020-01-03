@@ -65,7 +65,7 @@ describe('app.js', () => {
         });
       });
     });
-    describe.only('/reviews', () => {
+    describe('/reviews', () => {
       describe('/', () => {
         it('POST:201, creates a new review for a location ', () => {
           const postRequest = {
@@ -132,6 +132,20 @@ describe('app.js', () => {
                   'insert or update on table "reviews" violates foreign key constraint "reviews_location_id_foreign"'
                 );
               });
+          });
+          it('STATUS:405, when use attempts an invalid method', () => {
+            const invalidMethods = ['get', 'put', 'delete', 'patch'];
+
+            const methodPromises = invalidMethods.map(method => {
+              return request(app)
+                [method]('/api/reviews')
+                .expect(405)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('method not allowed');
+                });
+            });
+
+            return Promise.all(methodPromises);
           });
         });
       });
@@ -249,6 +263,20 @@ describe('app.js', () => {
               console.log(msg);
               expect(msg).to.equal('Location already exists.');
             });
+        });
+        it('STATUS:405, when use attempts an invalid method', () => {
+          const invalidMethods = ['put', 'delete', 'patch'];
+
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]('/api/locations')
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('method not allowed');
+              });
+          });
+
+          return Promise.all(methodPromises);
         });
       });
     });
