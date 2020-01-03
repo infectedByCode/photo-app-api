@@ -179,7 +179,6 @@ describe('app.js', () => {
           return request(app)
             .delete('/api/reviews/5')
             .expect(204);
-          /// GET REVIEW NEEDED
         });
       });
       describe('ERRORS /api/reviews/:review_id', () => {
