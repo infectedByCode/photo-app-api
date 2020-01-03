@@ -21,3 +21,20 @@ exports.createReview = reviewData => {
 
   return connection('reviews').insert({ location_id, author, image_url, review_title, review_body }, '*');
 };
+
+exports.updateReviewByID = (review_id, review_title, review_body) => {
+  const isDataValid = validateStringInput(review_title) && validateStringInput(review_body);
+
+  if (!isDataValid) return Promise.reject({ status: 400, msg: 'Title or body contains invalid characters.' });
+
+  return connection('reviews')
+    .select('*')
+    .where({ review_id })
+    .then(review => {
+      if (!review.length) return Promise.reject({ status: 404, msg: 'Review does not exist.' });
+      else
+        return connection('reviews')
+          .where({ review_id })
+          .update({ review_title, review_body }, '*');
+    });
+};
