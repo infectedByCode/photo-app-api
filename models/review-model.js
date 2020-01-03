@@ -52,3 +52,20 @@ exports.removeReviewByID = review_id => {
       else return connection('reviews').delete({ review_id });
     });
 };
+
+exports.fetchCommentsByReviewID = review_id => {
+  review_id = /\d/.test(review_id) ? +review_id : null;
+
+  if (!review_id) return Promise.reject({ status: 400, msg: 'Please enter a valid review_id' });
+
+  return connection('reviews')
+    .select('*')
+    .where({ review_id })
+    .then(review => {
+      if (!review.length) return Promise.reject({ status: 404, msg: 'Review not found' });
+      else
+        return connection('comments')
+          .select('*')
+          .where({ review_id });
+    });
+};
