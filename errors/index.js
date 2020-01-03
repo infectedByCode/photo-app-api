@@ -1,6 +1,6 @@
 exports.customErrorHandlers = (err, req, res, next) => {
   if (err.status) {
-    res.status(err.status).send({ msg: err.msg });
+    res.status(err.status).send({ msg: err.msg, ...err });
   } else next(err);
 };
 
