@@ -3,7 +3,8 @@ const {
   postReview,
   patchReviewByID,
   deleteReviewByID,
-  getCommentsByReviewID
+  getCommentsByReviewID,
+  postCommentByReviewID
 } = require('../controllers/review-controller');
 const { handle405Errors } = require('../errors');
 
@@ -21,6 +22,7 @@ reviewRouter
 reviewRouter
   .route('/:review_id/comments')
   .get(getCommentsByReviewID)
+  .post(postCommentByReviewID)
   .all(handle405Errors);
 
 module.exports = reviewRouter;

@@ -69,3 +69,13 @@ exports.fetchCommentsByReviewID = review_id => {
           .where({ review_id });
     });
 };
+
+exports.createCommentByReviewID = (review_id, commentData) => {
+  const { author, comment_body } = commentData;
+
+  if (!validateAuthorUUID(author) || !validateStringInput(comment_body)) {
+    return Promise.reject({ status: 400, msg: 'Invalid characters in the comment_body or author uuid not valid.' });
+  }
+
+  return connection('comments').insert({ review_id, author, comment_body }, '*');
+};

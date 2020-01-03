@@ -1,4 +1,10 @@
-const { createReview, updateReviewByID, removeReviewByID, fetchCommentsByReviewID } = require('../models/review-model');
+const {
+  createReview,
+  updateReviewByID,
+  removeReviewByID,
+  fetchCommentsByReviewID,
+  createCommentByReviewID
+} = require('../models/review-model');
 
 exports.postReview = (req, res, next) => {
   const reviewData = req.body;
@@ -37,6 +43,17 @@ exports.getCommentsByReviewID = (req, res, next) => {
   fetchCommentsByReviewID(review_id)
     .then(comments => {
       res.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+exports.postCommentByReviewID = (req, res, next) => {
+  const { review_id } = req.params;
+  const { ...commentData } = req.body;
+
+  createCommentByReviewID(review_id, commentData)
+    .then(([comment]) => {
+      res.status(201).send({ comment });
     })
     .catch(next);
 };
