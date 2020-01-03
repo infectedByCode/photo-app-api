@@ -449,7 +449,8 @@ describe('app.js', () => {
             .post('/api/locations')
             .send(postRequest)
             .expect(400)
-            .then(({ body: { msg } }) => {
+            .then(({ body: { msg, location_id } }) => {
+              expect(location_id).to.equal(18);
               expect(msg).to.equal('Location already exists.');
             });
         });
