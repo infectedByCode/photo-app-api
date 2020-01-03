@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const { expect } = require('chai');
-const { validateEmail, validateStringInput, validateQuery, formatLocation } = require('../utils/utils');
+const { validateEmail, validateStringInput, validateQuery, formatLocation, validateURL } = require('../utils/utils');
 
 describe('validateEmail', () => {
   it('returns false when an empty string is passed in', () => {
@@ -60,7 +60,7 @@ describe('validateQuery', () => {
   });
 });
 
-describe.only('formatLocation', () => {
+describe('formatLocation', () => {
   it('returns an empty string when passed one', () => {
     expect(formatLocation('')).to.equal('');
   });
@@ -71,5 +71,22 @@ describe.only('formatLocation', () => {
   it('returns capitalised location data when the name is more than one word', () => {
     expect(formatLocation('united kingdom')).to.equal('United Kingdom');
     expect(formatLocation('SOUTH AMERIca')).to.equal('South America');
+  });
+});
+
+describe('validateURL', () => {
+  it('returns false when an empty url is passed in', () => {
+    expect(validateURL('')).to.equal(false);
+  });
+  it('returns true when passed a valid url', () => {
+    expect(validateURL('https://www.google.com')).to.equal(true);
+    expect(validateURL('http://www.google.com')).to.equal(true);
+    expect(validateURL('www.google.com')).to.equal(true);
+    expect(validateURL('http://google.co')).to.equal(true);
+  });
+  it('returns false when passed an invalid url', () => {
+    expect(validateURL('go.co')).to.equal(false);
+    expect(validateURL('random-domain.com')).to.equal(false);
+    expect(validateURL('www."NOT-GOOD-WEBSITE".com')).to.equal(false);
   });
 });
