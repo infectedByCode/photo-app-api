@@ -65,7 +65,7 @@ describe('app.js', () => {
         });
       });
     });
-    describe('/reviews', () => {
+    describe.only('/reviews', () => {
       describe('/', () => {
         it('POST:201, creates a new review for a location ', () => {
           const postRequest = {
@@ -134,7 +134,7 @@ describe('app.js', () => {
               });
           });
           it('STATUS:405, when use attempts an invalid method', () => {
-            const invalidMethods = ['get', 'put', 'delete', 'patch'];
+            const invalidMethods = ['put', 'delete', 'patch', 'get'];
 
             const methodPromises = invalidMethods.map(method => {
               return request(app)
@@ -147,6 +147,63 @@ describe('app.js', () => {
 
             return Promise.all(methodPromises);
           });
+        });
+      });
+      describe('/:review_id', () => {
+        it('PATCH:200, updates the review title and/or review body', () => {
+          const patchReq = {
+            review_title: 'An amazing city with brilliant views',
+            review_body: 'More information about the city.'
+          };
+
+          return request(app)
+            .patch('/api/reviews/1')
+            .send(patchReq)
+            .expect(200)
+            .then(({ body: { review } }) => {
+              expect(review.review_title).to.equal(patchReq.review_title);
+              expect(review.review_body).to.equal(patchReq.review_body);
+              expect(review).to.have.keys([
+                'review_id',
+                'review_title',
+                'review_body',
+                'image_url',
+                'vote_count',
+                'author',
+                'location_id',
+                'created_at'
+              ]);
+            });
+        });
+      });
+      describe('ERRORS /api/reviews/:review_id', () => {
+        it('PATCH:400, when data contains invalid characters', () => {
+          const patchReq = {
+            review_title: 'An ##*!!$#^``brilliant views',
+            review_body: 'More information about the city.'
+          };
+
+          return request(app)
+            .patch('/api/reviews/1')
+            .send(patchReq)
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Title or body contains invalid characters.');
+            });
+        });
+        it('PATCH:404, when review_id does not exist', () => {
+          const patchReq = {
+            review_title: 'An amazingly brilliant view',
+            review_body: 'More information about the city.'
+          };
+
+          return request(app)
+            .patch('/api/reviews/2000')
+            .send(patchReq)
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Review does not exist.');
+            });
         });
       });
     });
@@ -260,7 +317,6 @@ describe('app.js', () => {
             .send(postRequest)
             .expect(400)
             .then(({ body: { msg } }) => {
-              console.log(msg);
               expect(msg).to.equal('Location already exists.');
             });
         });
