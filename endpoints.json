@@ -1,7 +1,4 @@
 {
-  "GET /api": {
-    "description": "serves up a json representation of all the available endpoints of the api"
-  },
   "POST /api/auth/signup": {
     "description": "creates a new users in the database after going through firebase authentication",
     "examplePostData": {
@@ -122,6 +119,140 @@
           "continent": "North America"
         }
       ]
+    }
+  },
+  "POST /api/locations": {
+    "description": "creates a new location and serves it up",
+    "queries": ["continent"],
+    "examplePostRequest": {
+      "city": "Liverpool",
+      "country": "United Kingdom",
+      "continent": "Europe"
+    },
+    "exampleResponse": {
+      "location": {
+        "location_id": 21,
+        "city": "Liverpool",
+        "country": "United Kingdom",
+        "continent": "Europe"
+      }
+    }
+  },
+  "GET /api/locations/:location_id/reviews": {
+    "description": "serves up an array of reviews for given location",
+    "queries": [],
+    "exampleResponse": {
+      "reviews": [
+        {
+          "review_id": 3,
+          "review_title": "Tenetur minus eos excepturi aliquid voluptatibus id est quos.",
+          "review_body": "Eligendi error illo natus. Ab deleniti odio qui rerum. Quis laborum et ut aut earum illo sequi atque. Quisquam qui eos culpa qui.",
+          "image_url": "http: //lorempixel.com/400/400/city/",
+          "vote_count": 12,
+          "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+          "location_id": 18,
+          "created_at": "2020-01-03T19: 40: 00.917Z"
+        },
+        {
+          "review_id": 6,
+          "review_title": "Voluptatum sunt amet sunt harum.",
+          "review_body": "Non mollitia enim voluptates officiis illo quo quaerat quo",
+          "image_url": "http://lorempixel.com/400/400/city/",
+          "vote_count": 9,
+          "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+          "location_id": 18,
+          "created_at": "2020-01-03T19: 40: 00.917Z"
+        }
+      ]
+    }
+  },
+  "POST /api/reviews": {
+    "description": "creates a new review for a location",
+    "examplePostRequest": {
+      "review_title": "Iste rem ut temporibus aut magni consectetur sunt nihil aliquam.",
+      "review_body": "Quia ea facere in commodi voluptatem corporis expedita. Odio incidunt aspernatur asperiores. Sequi consequatur et voluptates enim neque deleniti accusantium corrupti animi. Reiciendis sunt quaerat perferendis.",
+      "image_url": "http: //lorempixel.com/400/400/city/",
+      "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+      "location_id": 15
+    },
+    "exampleResponse": {
+      "review": {
+        "review_id": 26,
+        "review_title": "Iste rem ut temporibus aut magni consectetur sunt nihil aliquam.",
+        "review_body": "Quia ea facere in commodi voluptatem corporis expedita. Odio incidunt aspernatur asperiores. Sequi consequatur et voluptates enim neque deleniti accusantium corrupti animi. Reiciendis sunt quaerat perferendis.",
+        "image_url": "http: //lorempixel.com/400/400/city/",
+        "vote_count": 0,
+        "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+        "location_id": 15,
+        "created_at": "2020-01-03T19: 59: 58.645Z"
+      }
+    }
+  },
+  "PATCH /api/reviews/:review_id": {
+    "description": "updates a review for a given location",
+    "examplePatchRequest": {
+      "review_title": "An amazing city with brilliant views",
+      "review_body": "More information about the city."
+    },
+    "exampleResponse": {
+      "review": {
+        "review_id": 1,
+        "review_title": "An amazing city with brilliant views",
+        "review_body": "More information about the city.",
+        "image_url": "http: //lorempixel.com/400/400/city/",
+        "vote_count": 6,
+        "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+        "location_id": 20,
+        "created_at": "2020-01-03T19: 55: 59.687Z"
+      }
+    }
+  },
+  "DELETE /api/reviews/:review_id": {
+    "description": "removes a review from the database",
+    "queries": [],
+    "exampleResponse": {
+      "status": 204
+    }
+  },
+  "GET /api/reviews/:review_id/comments": {
+    "description": "returns an array of comments for a specific review",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "review_id": 3,
+          "review_title": "Tenetur minus eos excepturi aliquid voluptatibus id est quos.",
+          "review_body": "Eligendi error illo natus. Ab deleniti odio qui rerum. Quis laborum et ut aut earum illo sequi atque. Quisquam qui eos culpa qui.",
+          "image_url": "http: //lorempixel.com/400/400/city/",
+          "vote_count": 12,
+          "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+          "location_id": 18,
+          "created_at": "2020-01-03T19: 48: 30.438Z"
+        }
+      ]
+    }
+  },
+  "POST /api/reviews/:review_id/comments": {
+    "description": "creates a new comment by review ID.",
+    "examplePostRequest": {
+      "comment_body": "Wow. Looks amazing.",
+      "author": "a0b560a4-7d4c-43e1-a094-1d3528ef710f"
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 26,
+        "comment_body": "Wow. Looks amazing.",
+        "author": "a0b560a4-7d4c-43e1-a094-1d3528ef710f",
+        "review_id": 1,
+        "created_at": "2020-01-03T19: 52: 04.302Z"
+      }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "removes comment from the database",
+    "queries": [],
+    "exampleResponse": {
+      "status": 204
     }
   }
 }
