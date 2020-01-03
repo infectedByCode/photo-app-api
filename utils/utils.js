@@ -30,3 +30,9 @@ exports.formatLocation = str => {
     .map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
 };
+
+exports.validateURL = url => {
+  const urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-d][a-zA-Z\d-]+[a-zA-Z\d]\.[^\s]{2,}|www\.[a-zA-Z\d][a-zA-Z\d-]+[a-zA-Z\d]\.[^\s]{2,})/gi;
+
+  return urlRegex.test(url);
+};
