@@ -65,7 +65,7 @@ describe('app.js', () => {
         });
       });
     });
-    describe.only('/reviews', () => {
+    describe('/reviews', () => {
       describe('/', () => {
         it('POST:201, creates a new review for a location ', () => {
           const postRequest = {
@@ -175,6 +175,11 @@ describe('app.js', () => {
               ]);
             });
         });
+        it('DELETE:204, remove a review by its ID', () => {
+          return request(app)
+            .delete('/api/reviews/5')
+            .expect(204);
+        });
       });
       describe('ERRORS /api/reviews/:review_id', () => {
         it('PATCH:400, when data contains invalid characters', () => {
@@ -204,6 +209,36 @@ describe('app.js', () => {
             .then(({ body: { msg } }) => {
               expect(msg).to.equal('Review does not exist.');
             });
+        });
+        it('DELETE:400, when the review_id is invalid', () => {
+          return request(app)
+            .delete('/api/reviews/not-a-real-id')
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Please enter a valid review_id');
+            });
+        });
+        it('DELETE:404, when a valid review_id is not found in DB', () => {
+          return request(app)
+            .delete('/api/reviews/9999')
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Review not found');
+            });
+        });
+        it('STATUS:405, when use attempts an invalid method', () => {
+          const invalidMethods = ['put', 'post', 'get'];
+
+          const methodPromises = invalidMethods.map(method => {
+            return request(app)
+              [method]('/api/reviews/1')
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal('method not allowed');
+              });
+          });
+
+          return Promise.all(methodPromises);
         });
       });
     });
