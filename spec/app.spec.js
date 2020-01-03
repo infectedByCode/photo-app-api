@@ -103,6 +103,28 @@ describe('app.js', () => {
               expect(location).to.eql({ ...postRequest, location_id: 21 });
             });
         });
+        it('POST:201, adds a new location to DB in the correct format', () => {
+          const postRequest = {
+            city: 'liveRPooL',
+            country: 'uNITED kiNGdom',
+            continent: 'Europe'
+          };
+
+          const expecgtedResult = {
+            location_id: 21,
+            city: 'Liverpool',
+            country: 'United Kingdom',
+            continent: 'Europe'
+          };
+
+          return request(app)
+            .post('/api/locations')
+            .send(postRequest)
+            .expect(201)
+            .then(({ body: { location } }) => {
+              expect(location).to.eql(expecgtedResult);
+            });
+        });
       });
       describe('ERRORS /api/locations', () => {
         it('GET:200, returns unfiltered array if query is invalid in any way', () => {
@@ -138,10 +160,10 @@ describe('app.js', () => {
             .send(postRequest)
             .expect(400)
             .then(({ body: { msg } }) => {
-              expect(msg).to.equal('null value in column "country" violates not-null constraint');
+              expect(msg).to.equal('Missing data - Please include a city, country and continent.');
             });
         });
-        it.only('POST:400, when the location already exists in the db', () => {
+        it('POST:400, when the location already exists in the db', () => {
           const postRequest = {
             city: 'Hue',
             country: 'Vietnam',
