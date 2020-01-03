@@ -369,6 +369,77 @@ describe('app.js', () => {
 
           return Promise.all(methodPromises);
         });
+        describe('/:location_id/reviews', () => {
+          it('GET:200, returns an array of reviews based on a given location', () => {
+            return request(app)
+              .get('/api/locations/18/reviews')
+              .expect(200)
+              .then(({ body: { reviews } }) => {
+                expect(reviews).to.be.an('array');
+              });
+          });
+          it('GET:200, each review has the relevant keys', () => {
+            return request(app)
+              .get('/api/locations/18/reviews')
+              .expect(200)
+              .then(({ body: { reviews } }) => {
+                reviews.forEach(review => {
+                  expect(review).to.have.keys([
+                    'review_id',
+                    'review_title',
+                    'review_body',
+                    'created_at',
+                    'vote_count',
+                    'author',
+                    'image_url',
+                    'location_id'
+                  ]);
+                });
+              });
+          });
+          it('GET:200, returns reviews for the correct location_id', () => {
+            return request(app)
+              .get('/api/locations/18/reviews')
+              .expect(200)
+              .then(({ body: { reviews } }) => {
+                reviews.forEach(review => {
+                  expect(review.location_id).to.equal(18);
+                });
+              });
+          });
+          describe('ERRORS /api/locations/:location_id/reviews', () => {
+            it('GET:400, when location_id is not valid', () => {
+              return request(app)
+                .get('/api/locations/not-a-num/reviews')
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('Please enter a valid location_id');
+                });
+            });
+            it('GET:404, when location_id is valid but not found', () => {
+              return request(app)
+                .get('/api/locations/500/reviews')
+                .expect(404)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('Location_id does not exist');
+                });
+            });
+            it('STATUS:405, when use attempts an invalid method', () => {
+              const invalidMethods = ['post', 'put', 'delete', 'patch'];
+
+              const methodPromises = invalidMethods.map(method => {
+                return request(app)
+                  [method]('/api/locations/1/reviews')
+                  .expect(405)
+                  .then(({ body: { msg } }) => {
+                    expect(msg).to.equal('method not allowed');
+                  });
+              });
+
+              return Promise.all(methodPromises);
+            });
+          });
+        });
       });
     });
     describe('/users', () => {
