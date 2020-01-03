@@ -11,7 +11,7 @@ exports.validateStringInput = str => {
 
   if (!str.length || str === undefined) return false;
 
-  const validCharacters = /([^A-Z\d\ ])/gi;
+  const validCharacters = /([^A-Z\d.,&$'"\ ])/gi;
 
   return !validCharacters.test(str);
 };
@@ -35,4 +35,11 @@ exports.validateURL = url => {
   const urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-d][a-zA-Z\d-]+[a-zA-Z\d]\.[^\s]{2,}|www\.[a-zA-Z\d][a-zA-Z\d-]+[a-zA-Z\d]\.[^\s]{2,})/gi;
 
   return urlRegex.test(url);
+};
+
+exports.validateAuthorUUID = author => {
+  author = author.trim();
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  return uuidRegex.test(author);
 };

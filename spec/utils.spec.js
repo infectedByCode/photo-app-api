@@ -1,7 +1,14 @@
 process.env.NODE_ENV = 'test';
 
 const { expect } = require('chai');
-const { validateEmail, validateStringInput, validateQuery, formatLocation, validateURL } = require('../utils/utils');
+const {
+  validateEmail,
+  validateStringInput,
+  validateQuery,
+  formatLocation,
+  validateURL,
+  validateAuthorUUID
+} = require('../utils/utils');
 
 describe('validateEmail', () => {
   it('returns false when an empty string is passed in', () => {
@@ -42,7 +49,7 @@ describe('validateStringInput', () => {
     expect(validateStringInput('United Kingdom')).to.equal(true);
   });
   it('returns false when illegal charachers are input', () => {
-    expect(validateStringInput('Real user "DROP DATABASE"')).to.equal(false);
+    expect(validateStringInput('Real user ^^')).to.equal(false);
     expect(validateStringInput('?%*')).to.equal(false);
   });
 });
@@ -88,5 +95,25 @@ describe('validateURL', () => {
     expect(validateURL('go.co')).to.equal(false);
     expect(validateURL('random-domain.com')).to.equal(false);
     expect(validateURL('www."NOT-GOOD-WEBSITE".com')).to.equal(false);
+  });
+});
+
+describe('validateAuthorUUID', () => {
+  it('return false when an empty string is passed', () => {
+    expect(validateAuthorUUID('')).to.equal(false);
+  });
+  it('returns true when a valid uuid is passed in', () => {
+    let uuid = '3c9f50cb-da22-4a7d-b105-246b6f14abf4';
+    expect(validateAuthorUUID(uuid)).to.equal(true);
+    uuid = 'fa0963c2-ec9f-4180-9256-0bd756114e90';
+    expect(validateAuthorUUID(uuid)).to.equal(true);
+    uuid = 'a0b560a4-7d4c-43e1-a094-1d3528ef710f';
+    expect(validateAuthorUUID(uuid)).to.equal(true);
+  });
+  it('returns false when an invalid uuid is passed in', () => {
+    let uuid = '3c-da22-4a7d-b105-246b6f14abf4';
+    expect(validateAuthorUUID(uuid)).to.equal(false);
+    uuid = 'fa0963c2-ec9f-4180-9256';
+    expect(validateAuthorUUID(uuid)).to.equal(false);
   });
 });
