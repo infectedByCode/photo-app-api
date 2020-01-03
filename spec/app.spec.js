@@ -82,8 +82,57 @@ describe('app.js', () => {
             .send(postRequest)
             .expect(201)
             .then(({ body: { review } }) => {
-              expect(review).to.eql({ ...postRequest, review_id: 200 });
+              expect(review).to.have.keys([
+                'review_id',
+                'review_title',
+                'review_body',
+                'image_url',
+                'vote_count',
+                'author',
+                'location_id',
+                'created_at'
+              ]);
             });
+        });
+        describe('ERRORS /api/reviews', () => {
+          it('POST:400, when any of the data is invalid', () => {
+            const postRequest = {
+              review_title: '!@@#$%$#%TR&**^&*',
+              review_body: 'Quia ea facere.',
+              image_url: 'http://lorempixel.com/400/400/city/',
+              author: '3c9f50cb-da22-4a7d-b105-246b6f14abf4',
+              location_id: 15
+            };
+
+            return request(app)
+              .post('/api/reviews')
+              .send(postRequest)
+              .expect(400)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal(
+                  'Some data is invalid, only alphanumeric characters and the following special characters are valid .,&$\'" '
+                );
+              });
+          });
+          it('POST:404, if location does not exist in the db', () => {
+            const postRequest = {
+              review_title: 'A very valid sentence',
+              review_body: 'Quia ea facere.',
+              image_url: 'http://lorempixel.com/400/400/city/',
+              author: '3c9f50cb-da22-4a7d-b105-246b6f14abf4',
+              location_id: 350
+            };
+
+            return request(app)
+              .post('/api/reviews')
+              .send(postRequest)
+              .expect(404)
+              .then(({ body: { msg } }) => {
+                expect(msg).to.equal(
+                  'insert or update on table "reviews" violates foreign key constraint "reviews_location_id_foreign"'
+                );
+              });
+          });
         });
       });
     });
