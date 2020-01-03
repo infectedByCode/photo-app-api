@@ -1,4 +1,4 @@
-const { createReview, updateReviewByID } = require('../models/review-model');
+const { createReview, updateReviewByID, removeReviewByID } = require('../models/review-model');
 
 exports.postReview = (req, res, next) => {
   const reviewData = req.body;
@@ -17,6 +17,16 @@ exports.patchReviewByID = (req, res, next) => {
   updateReviewByID(review_id, review_title, review_body)
     .then(([review]) => {
       res.status(200).send({ review });
+    })
+    .catch(next);
+};
+
+exports.deleteReviewByID = (req, res, next) => {
+  const { review_id } = req.params;
+
+  removeReviewByID(review_id)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };

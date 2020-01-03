@@ -1,5 +1,5 @@
 const reviewRouter = require('express').Router();
-const { postReview, patchReviewByID } = require('../controllers/review-controller');
+const { postReview, patchReviewByID, deleteReviewByID } = require('../controllers/review-controller');
 const { handle405Errors } = require('../errors');
 
 reviewRouter
@@ -10,6 +10,7 @@ reviewRouter
 reviewRouter
   .route('/:review_id')
   .patch(patchReviewByID)
+  .delete(deleteReviewByID)
   .all(handle405Errors);
 
 module.exports = reviewRouter;
