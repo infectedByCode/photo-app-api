@@ -179,6 +179,7 @@ describe('app.js', () => {
           return request(app)
             .delete('/api/reviews/5')
             .expect(204);
+          /// GET REVIEW NEEDED
         });
       });
       describe('ERRORS /api/reviews/:review_id', () => {
@@ -241,7 +242,7 @@ describe('app.js', () => {
           return Promise.all(methodPromises);
         });
       });
-      describe.only('/comments', () => {
+      describe('/comments', () => {
         it('GET:200, returns an array of comments for a review', () => {
           return request(app)
             .get('/api/reviews/18/comments')
@@ -643,7 +644,12 @@ describe('app.js', () => {
         it('DELETE:204, removes user by their username', () => {
           return request(app)
             .delete('/api/users/Christiana74')
-            .expect(204);
+            .expect(204)
+            .then(() => {
+              return request(app)
+                .get('/api/users/Christina74')
+                .expect(404);
+            });
         });
         describe('ERRORS /users:/:username', () => {
           it('GET:400, when username input is not valid', () => {
@@ -737,6 +743,31 @@ describe('app.js', () => {
 
             return Promise.all(methodPromises);
           });
+        });
+      });
+    });
+    describe('/comments/:comment_id', () => {
+      it('DELETE:204, removes comment from database by its ID.', () => {
+        return request(app)
+          .delete('/api/comments/2')
+          .expect(204);
+      });
+      describe('ERRORS /api/comments/:comment_id', () => {
+        it('DELETE:400, when the comment_id is invalid', () => {
+          return request(app)
+            .delete('/api/comments/not-a-num')
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Comment ID must be a number');
+            });
+        });
+        it('DELETE:404, when the comment does not exist', () => {
+          return request(app)
+            .delete('/api/comments/20000')
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Comment can not be found.');
+            });
         });
       });
     });
