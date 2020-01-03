@@ -49,7 +49,10 @@ exports.removeReviewByID = review_id => {
     .where({ review_id })
     .then(review => {
       if (!review.length) return Promise.reject({ status: 404, msg: 'Review not found' });
-      else return connection('reviews').delete({ review_id });
+      else
+        return connection('reviews')
+          .where({ review_id })
+          .del();
     });
 };
 

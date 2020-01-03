@@ -49,7 +49,15 @@ exports.removeUserByUsername = ({ username }) => {
     return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
   }
 
-  return connection('users').where('username', username);
+  return connection('users')
+    .select('*')
+    .where('username', username)
+    .then(user => {
+      if (!user.length) return Promise.reject({ status: 404, msg: 'User can not be found' });
+      return connection('users')
+        .where('username', username)
+        .del();
+    });
 };
 
 exports.fetchAllUsers = (limit = 5) => {
