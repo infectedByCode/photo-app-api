@@ -65,6 +65,28 @@ describe('app.js', () => {
         });
       });
     });
+    describe.only('/reviews', () => {
+      describe('/', () => {
+        it('POST:201, creates a new review for a location ', () => {
+          const postRequest = {
+            review_title: 'Iste rem ut temporibus aut magni consectetur sunt nihil aliquam.',
+            review_body:
+              'Quia ea facere in commodi voluptatem corporis expedita. Odio incidunt aspernatur asperiores. Sequi consequatur et voluptates enim neque deleniti accusantium corrupti animi. Reiciendis sunt quaerat perferendis.',
+            image_url: 'http://lorempixel.com/400/400/city/',
+            author: '3c9f50cb-da22-4a7d-b105-246b6f14abf4',
+            location_id: 15
+          };
+
+          return request(app)
+            .post('/api/reviews')
+            .send(postRequest)
+            .expect(201)
+            .then(({ body: { review } }) => {
+              expect(review).to.eql({ ...postRequest, review_id: 200 });
+            });
+        });
+      });
+    });
     describe('/locations', () => {
       describe('/', () => {
         it('GET:200, returns an array of all locations', () => {
@@ -175,6 +197,7 @@ describe('app.js', () => {
             .send(postRequest)
             .expect(400)
             .then(({ body: { msg } }) => {
+              console.log(msg);
               expect(msg).to.equal('Location already exists.');
             });
         });
