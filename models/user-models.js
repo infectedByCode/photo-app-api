@@ -1,8 +1,8 @@
 const connection = require('../db/connection');
-const { validateStringInput, validateEmail } = require('../utils/utils');
+const { validateUser, validateEmail, validateStringInput } = require('../utils/utils');
 
 exports.fetchUserByUsername = ({ username }) => {
-  const isValidUsername = validateStringInput(username);
+  const isValidUsername = validateUser(username);
 
   if (!isValidUsername) {
     return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
@@ -16,7 +16,7 @@ exports.fetchUserByUsername = ({ username }) => {
 exports.updateUserByUsername = ({ username }, userData) => {
   const { email, ...inputs } = userData;
 
-  const isValidUsername = validateStringInput(username);
+  const isValidUsername = validateUser(username);
   const isValidEmail = validateEmail(email);
   const areInputsValid = Object.values(inputs).every(input => {
     return validateStringInput(input);
@@ -43,7 +43,7 @@ exports.updateUserByUsername = ({ username }, userData) => {
 };
 
 exports.removeUserByUsername = ({ username }) => {
-  const isValidUsername = validateStringInput(username);
+  const isValidUsername = validateUser(username);
 
   if (!isValidUsername) {
     return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
