@@ -1,4 +1,4 @@
-const { fetchAllLocations, createLocation } = require('../models/location-models');
+const { fetchAllLocations, createLocation, fetchReviewsByLocation } = require('../models/location-models');
 
 exports.getAllLocations = (req, res, next) => {
   const { continent } = req.query;
@@ -16,6 +16,16 @@ exports.postLocation = (req, res, next) => {
   createLocation(locationData)
     .then(([location]) => {
       res.status(201).send({ location });
+    })
+    .catch(next);
+};
+
+exports.getReviewsByLocation = (req, res, next) => {
+  const { location_id } = req.params;
+
+  fetchReviewsByLocation(location_id)
+    .then(reviews => {
+      res.status(200).send({ reviews });
     })
     .catch(next);
 };
