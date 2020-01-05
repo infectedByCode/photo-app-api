@@ -126,11 +126,13 @@ describe('validateUUID', () => {
     expect(validateUUID(uuid)).to.equal(true);
     uuid = 'a0b560a4-7d4c-43e1-a094-1d3528ef710f';
     expect(validateUUID(uuid)).to.equal(true);
+    uuid = 'a0b560a47d4c43e1a0941d3528ef710f';
+    expect(validateUUID(uuid)).to.equal(true);
   });
   it('returns false when an invalid uuid is passed in', () => {
-    let uuid = '3c-da22-4a7d-b105-246b6f14abf4';
+    let uuid = '3c-da22!!!-4a7d-b105-246b6f14abf4';
     expect(validateUUID(uuid)).to.equal(false);
-    uuid = 'fa0963c2-ec9f-4180-9256';
+    uuid = 'fa0963c2!!!-ec9f-4180-9256';
     expect(validateUUID(uuid)).to.equal(false);
   });
 });

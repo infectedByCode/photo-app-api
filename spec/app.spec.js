@@ -677,7 +677,7 @@ describe('app.js', () => {
             };
 
             return request(app)
-              .patch('/api/users/UserIDNotValid')
+              .patch('/api/users/UserIDNotValid!!!!')
               .send(patchRequest)
               .expect(400)
               .then(({ body: { msg } }) => {

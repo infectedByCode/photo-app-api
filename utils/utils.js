@@ -47,9 +47,13 @@ exports.validateURL = url => {
   return urlRegex.test(url);
 };
 
-exports.validateUUID = author => {
-  author = author.trim();
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+exports.validateUUID = user_id => {
+  user_id = user_id.trim();
 
-  return uuidRegex.test(author);
+  if (!user_id.length) return false;
+
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const uidFirebaseRegex = /[^a-z\d]{1,128}/i;
+
+  return uuidRegex.test(user_id) || !uidFirebaseRegex.test(user_id);
 };
