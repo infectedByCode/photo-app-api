@@ -1,14 +1,9 @@
-const {
-  fetchUserByUsername,
-  updateUserByUsername,
-  removeUserByUsername,
-  fetchAllUsers
-} = require('../models/user-models');
+const { fetchUserByUserID, updateUserByUserID, removeUserByUserID, fetchAllUsers } = require('../models/user-models');
 
-exports.getUserByUsername = (req, res, next) => {
-  const username = req.params;
+exports.getUserByUserID = (req, res, next) => {
+  const user_id = req.params;
 
-  fetchUserByUsername(username)
+  fetchUserByUserID(user_id)
     .then(user => {
       if (!user) return Promise.reject({ status: 404, msg: 'User can not be found' });
       res.status(200).send({ user });
@@ -16,11 +11,11 @@ exports.getUserByUsername = (req, res, next) => {
     .catch(next);
 };
 
-exports.patchUserByUsername = (req, res, next) => {
-  const username = req.params;
+exports.patchUserByUserID = (req, res, next) => {
+  const user_id = req.params;
   const userData = req.body;
 
-  updateUserByUsername(username, userData)
+  updateUserByUserID(user_id, userData)
     .then(([user]) => {
       if (!user) return Promise.reject({ status: 404, msg: 'User can not be found' });
       res.status(200).send({ user });
@@ -28,12 +23,12 @@ exports.patchUserByUsername = (req, res, next) => {
     .catch(next);
 };
 
-exports.deleteUserByUsername = (req, res, next) => {
-  const username = req.params;
+exports.deleteUserByUserID = (req, res, next) => {
+  const user_id = req.params;
 
-  removeUserByUsername(username)
+  removeUserByUserID(user_id)
     .then(() => {
-      fetchUserByUsername(username)
+      fetchUserByUserID(user_id)
         .then(() => {
           res.sendStatus(204);
         })

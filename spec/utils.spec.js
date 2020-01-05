@@ -7,7 +7,7 @@ const {
   validateQuery,
   formatLocation,
   validateURL,
-  validateAuthorUUID,
+  validateUUID,
   validateUser
 } = require('../utils/utils');
 
@@ -115,22 +115,22 @@ describe('validateURL', () => {
   });
 });
 
-describe('validateAuthorUUID', () => {
+describe('validateUUID', () => {
   it('return false when an empty string is passed', () => {
-    expect(validateAuthorUUID('')).to.equal(false);
+    expect(validateUUID('')).to.equal(false);
   });
   it('returns true when a valid uuid is passed in', () => {
     let uuid = '3c9f50cb-da22-4a7d-b105-246b6f14abf4';
-    expect(validateAuthorUUID(uuid)).to.equal(true);
+    expect(validateUUID(uuid)).to.equal(true);
     uuid = 'fa0963c2-ec9f-4180-9256-0bd756114e90';
-    expect(validateAuthorUUID(uuid)).to.equal(true);
+    expect(validateUUID(uuid)).to.equal(true);
     uuid = 'a0b560a4-7d4c-43e1-a094-1d3528ef710f';
-    expect(validateAuthorUUID(uuid)).to.equal(true);
+    expect(validateUUID(uuid)).to.equal(true);
   });
   it('returns false when an invalid uuid is passed in', () => {
     let uuid = '3c-da22-4a7d-b105-246b6f14abf4';
-    expect(validateAuthorUUID(uuid)).to.equal(false);
+    expect(validateUUID(uuid)).to.equal(false);
     uuid = 'fa0963c2-ec9f-4180-9256';
-    expect(validateAuthorUUID(uuid)).to.equal(false);
+    expect(validateUUID(uuid)).to.equal(false);
   });
 });

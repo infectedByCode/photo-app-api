@@ -614,16 +614,16 @@ describe('app.js', () => {
         });
       });
       describe('/:username', () => {
-        it('GET:200, returns a user by their username', () => {
+        it('GET:200, returns a user by their user_id', () => {
           return request(app)
-            .get('/api/users/Christiana74')
+            .get('/api/users/e40e752a-3230-4758-a118-b7f3537c1fd8')
             .expect(200)
             .then(({ body: { user } }) => {
               expect(user).to.have.keys(['user_id', 'first_name', 'last_name', 'username', 'email', 'created_at']);
               expect(user.username).to.equal('Christiana74');
             });
         });
-        it('PATCH:200, updates user by username and serves up user.', () => {
+        it('PATCH:200, updates user by user_id and serves up user.', () => {
           const patchRequest = {
             first_name: 'newfirstname',
             last_name: 'newlastname',
@@ -631,23 +631,24 @@ describe('app.js', () => {
           };
 
           return request(app)
-            .patch('/api/users/Christiana74')
+            .patch('/api/users/e40e752a-3230-4758-a118-b7f3537c1fd8')
             .send(patchRequest)
             .expect(200)
             .then(({ body: { user } }) => {
+              expect(user.user_id).to.equal('e40e752a-3230-4758-a118-b7f3537c1fd8');
               expect(user.username).to.equal('Christiana74');
               expect(user.first_name).to.equal('newfirstname');
               expect(user.last_name).to.equal('newlastname');
               expect(user.email).to.equal('newemail@email.com');
             });
         });
-        it('DELETE:204, removes user by their username', () => {
+        it('DELETE:204, removes user by their user_id', () => {
           return request(app)
-            .delete('/api/users/Christiana74')
+            .delete('/api/users/e40e752a-3230-4758-a118-b7f3537c1fd8')
             .expect(204)
             .then(() => {
               return request(app)
-                .get('/api/users/Christina74')
+                .get('/api/users/e40e752a-3230-4758-a118-b7f3537c1fd8')
                 .expect(404);
             });
         });
@@ -657,12 +658,12 @@ describe('app.js', () => {
               .get('/api/users/c9"INSERT"goal')
               .expect(400)
               .then(({ body: { msg } }) => {
-                expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
+                expect(msg).to.equal('Invalid input for user_id.');
               });
           });
           it('GET:404, when username is valid but not found', () => {
             return request(app)
-              .get('/api/users/notreallyauser')
+              .get('/api/users/e40e752e-3230-4758-a118-b7f3537c1fd8')
               .expect(404)
               .then(({ body: { msg } }) => {
                 expect(msg).to.equal('User can not be found');
@@ -676,11 +677,11 @@ describe('app.js', () => {
             };
 
             return request(app)
-              .patch('/api/users/User"INSERT NEW DATA"HERE')
+              .patch('/api/users/UserIDNotValid')
               .send(patchRequest)
               .expect(400)
               .then(({ body: { msg } }) => {
-                expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
+                expect(msg).to.equal('Invalid input for user_id.');
               });
           });
           it('PATCH:400, when input data is invalid', () => {
@@ -691,7 +692,7 @@ describe('app.js', () => {
             };
 
             return request(app)
-              .patch('/api/users/Christiana74')
+              .patch('/api/users/e40e752e-3230-4758-a118-b7f3537c1fd8')
               .send(patchRequest)
               .expect(400)
               .then(({ body: { msg } }) => {
@@ -706,7 +707,7 @@ describe('app.js', () => {
             };
 
             return request(app)
-              .patch('/api/users/Petechan1994')
+              .patch('/api/users/e40e752d-3230-4758-a118-b7f3537c1fd8')
               .send(patchRequest)
               .expect(404)
               .then(({ body: { msg } }) => {
@@ -718,12 +719,12 @@ describe('app.js', () => {
               .delete('/api/users/$$$NOTUSER$$$')
               .expect(400)
               .then(({ body: { msg } }) => {
-                expect(msg).to.equal('Invalid input for username. Please only use alphanumeric characters.');
+                expect(msg).to.equal('Invalid input for user_id.');
               });
           });
           it('POST:404, when a valid username does not exist', () => {
             return request(app)
-              .delete('/api/users/usernothere')
+              .delete('/api/users/e40e752d-3230-4758-a118-b7f3537c1fd8')
               .expect(404)
               .then(({ body: { msg } }) => {
                 expect(msg).to.equal('User can not be found');

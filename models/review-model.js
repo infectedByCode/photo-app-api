@@ -1,13 +1,13 @@
 const connection = require('../db/connection');
-const { validateStringInput, validateURL, validateAuthorUUID } = require('../utils/utils');
+const { validateStringInput, validateURL, validateUUID } = require('../utils/utils');
 
 exports.createReview = reviewData => {
   const { location_id, author, image_url, ...strings } = reviewData;
 
   const areStringsValid = Object.values(strings).every(data => {
-    return validateStringInput(data) || validateAuthorUUID(data) || validateURL(data);
+    return validateStringInput(data) || validateUUID(data) || validateURL(data);
   });
-  const isAuthorValid = validateAuthorUUID(author);
+  const isAuthorValid = validateUUID(author);
   const isURLValid = validateURL(image_url);
 
   if (!areStringsValid || !isAuthorValid || !isURLValid) {
@@ -76,7 +76,7 @@ exports.fetchCommentsByReviewID = review_id => {
 exports.createCommentByReviewID = (review_id, commentData) => {
   const { author, comment_body } = commentData;
 
-  if (!validateAuthorUUID(author) || !validateStringInput(comment_body)) {
+  if (!validateUUID(author) || !validateStringInput(comment_body)) {
     return Promise.reject({ status: 400, msg: 'Invalid characters in the comment_body or author uuid not valid.' });
   }
 

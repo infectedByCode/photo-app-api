@@ -1,8 +1,8 @@
 const userRouter = require('express').Router();
 const {
-  getUserByUsername,
-  patchUserByUsername,
-  deleteUserByUsername,
+  getUserByUserID,
+  patchUserByUserID,
+  deleteUserByUserID,
   getAllUsers
 } = require('../controllers/user-controller');
 const { handle405Errors } = require('../errors');
@@ -13,10 +13,10 @@ userRouter
   .all(handle405Errors);
 
 userRouter
-  .route('/:username')
-  .get(getUserByUsername)
-  .patch(patchUserByUsername)
-  .delete(deleteUserByUsername)
+  .route('/:user_id')
+  .get(getUserByUserID)
+  .patch(patchUserByUserID)
+  .delete(deleteUserByUserID)
   .all(handle405Errors);
 
 module.exports = userRouter;

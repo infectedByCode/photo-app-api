@@ -1,29 +1,28 @@
 const connection = require('../db/connection');
-const { validateUser, validateEmail, validateStringInput } = require('../utils/utils');
+const { validateEmail, validateStringInput, validateUUID } = require('../utils/utils');
 
-exports.fetchUserByUsername = ({ username }) => {
-  const isValidUsername = validateUser(username);
+exports.fetchUserByUserID = ({ user_id }) => {
+  const isUUIDValid = validateUUID(user_id);
 
-  if (!isValidUsername) {
-    return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
+  if (!isUUIDValid) {
+    return Promise.reject({ status: 400, msg: 'Invalid input for user_id.' });
   }
 
   return connection('users')
     .first()
-    .where('username', username);
+    .where('user_id', user_id);
 };
 
-exports.updateUserByUsername = ({ username }, userData) => {
+exports.updateUserByUserID = ({ user_id }, userData) => {
   const { email, ...inputs } = userData;
-
-  const isValidUsername = validateUser(username);
+  const isUUIDValid = validateUUID(user_id);
   const isValidEmail = validateEmail(email);
   const areInputsValid = Object.values(inputs).every(input => {
     return validateStringInput(input);
   });
 
-  if (!isValidUsername) {
-    return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
+  if (!isUUIDValid) {
+    return Promise.reject({ status: 400, msg: 'Invalid input for user_id.' });
   }
 
   if (!isValidEmail) {
@@ -38,24 +37,24 @@ exports.updateUserByUsername = ({ username }, userData) => {
   }
 
   return connection('users')
-    .where('username', username)
+    .where('user_id', user_id)
     .update({ email, first_name: inputs.first_name, last_name: inputs.last_name }, '*');
 };
 
-exports.removeUserByUsername = ({ username }) => {
-  const isValidUsername = validateUser(username);
+exports.removeUserByUserID = ({ user_id }) => {
+  const isUUIDValid = validateUUID(user_id);
 
-  if (!isValidUsername) {
-    return Promise.reject({ status: 400, msg: 'Invalid input for username. Please only use alphanumeric characters.' });
+  if (!isUUIDValid) {
+    return Promise.reject({ status: 400, msg: 'Invalid input for user_id.' });
   }
 
   return connection('users')
     .select('*')
-    .where('username', username)
+    .where('user_id', user_id)
     .then(user => {
       if (!user.length) return Promise.reject({ status: 404, msg: 'User can not be found' });
       return connection('users')
-        .where('username', username)
+        .where('user_id', user_id)
         .del();
     });
 };
