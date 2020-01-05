@@ -68,7 +68,7 @@
       }
     }
   },
-  "GET /api/users/:username": {
+  "GET /api/users/:user_id": {
     "description": "serves a user object by username",
     "queries": [],
     "exampleResponse": {
@@ -82,7 +82,7 @@
       }
     }
   },
-  "PATCH /api/users/:username": {
+  "PATCH /api/users/:user_id": {
     "description": "updates user first_name, last_name or email",
     "examplePatchRequest": {
       "first_name": "newfirstname",
@@ -100,7 +100,7 @@
       }
     }
   },
-  "DELETE /api/users/:username": {
+  "DELETE /api/users/:user_id": {
     "description": "deletes a user by their username",
     "queries": [],
     "exampleResponse": {
