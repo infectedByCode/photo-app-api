@@ -473,7 +473,7 @@ describe('app.js', () => {
 
           return Promise.all(methodPromises);
         });
-        describe.only('/:location_id', () => {
+        describe('/:location_id', () => {
           it('GET:200, returns a location object by its ID', () => {
             return request(app)
               .get('/api/locations/1')
@@ -489,6 +489,24 @@ describe('app.js', () => {
               .then(({ body: { location } }) => {
                 expect(location).to.have.keys(['location_id', 'city', 'country', 'continent', 'image_url']);
               });
+          });
+          describe('ERRORS /api/locations/:location_id', () => {
+            it('GET:400, when the location_id is invalid', () => {
+              return request(app)
+                .get('/api/locations/notanid')
+                .expect(400)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('Please enter a valid location_id');
+                });
+            });
+            it('GET:404, when the location_id is valid but not found', () => {
+              return request(app)
+                .get('/api/locations/999')
+                .expect(404)
+                .then(({ body: { msg } }) => {
+                  expect(msg).to.equal('Location_id does not exist');
+                });
+            });
           });
         });
       });
