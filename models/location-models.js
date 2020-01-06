@@ -65,3 +65,20 @@ exports.fetchReviewsByLocation = location_id => {
           .where({ location_id });
     });
 };
+
+exports.fetchLocationByID = location_id => {
+  location_id = /\d/.test(location_id) ? +location_id : null;
+
+  if (!location_id) return Promise.reject({ status: 400, msg: 'Please enter a valid location_id' });
+
+  return connection('locations')
+    .select('*')
+    .where({ location_id })
+    .then(location => {
+      if (!location.length) return Promise.reject({ status: 404, msg: 'Location_id does not exist' });
+      else
+        return connection('locations')
+          .first()
+          .where({ location_id });
+    });
+};
