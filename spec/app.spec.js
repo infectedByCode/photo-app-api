@@ -532,6 +532,7 @@ describe('app.js', () => {
                   'created_at',
                   'vote_count',
                   'author',
+                  'username',
                   'image_url',
                   'location_id'
                 ]);

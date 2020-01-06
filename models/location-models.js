@@ -61,8 +61,19 @@ exports.fetchReviewsByLocation = location_id => {
       if (!location.length) return Promise.reject({ status: 404, msg: 'Location_id does not exist' });
       else
         return connection('reviews')
-          .select('*')
-          .where({ location_id });
+          .select(
+            'reviews.author',
+            'reviews.created_at',
+            'reviews.image_url',
+            'reviews.location_id',
+            'reviews.review_body',
+            'reviews.review_id',
+            'reviews.review_title',
+            'users.username',
+            'reviews.vote_count'
+          )
+          .where({ location_id })
+          .leftJoin('users', 'users.user_id', 'reviews.author');
     });
 };
 
