@@ -1,5 +1,5 @@
 const connection = require('../db/connection');
-const { validateQuery, validateStringInput, formatLocation } = require('../utils/utils');
+const { validateQuery, validateStringInput, formatLocation, validateURL } = require('../utils/utils');
 
 exports.fetchAllLocations = continent => {
   const continents = ['Europe', 'North American', 'South America', 'Asia', 'Oceania', 'Africa', 'Antarctica'];
@@ -20,16 +20,15 @@ exports.fetchAllLocations = continent => {
 
 exports.createLocation = locationData => {
   let isDataValid = Object.values(locationData).every(data => {
-    return validateStringInput(data);
+    return validateStringInput(data) || validateURL(data);
   });
 
   if (!isDataValid) {
     return Promise.reject({ status: 400, msg: 'Please only input alphanumeric characters and spaces.' });
   }
+  let { city, country, continent, image_url } = locationData;
 
-  let { city, country, continent } = locationData;
-
-  if (!city || !country || !continent)
+  if (!city || !country || !continent || !image_url)
     return Promise.reject({ status: 400, msg: 'Missing data - Please include a city, country and continent.' });
 
   if (city) city = formatLocation(city);
@@ -44,7 +43,7 @@ exports.createLocation = locationData => {
       continent
     })
     .then(location => {
-      if (!location.length) return connection('locations').insert({ city, country, continent }, '*');
+      if (!location.length) return connection('locations').insert({ city, country, continent, image_url }, '*');
       else
         return Promise.reject({ status: 400, msg: 'Location already exists.', location_id: location[0].location_id });
     });

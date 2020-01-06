@@ -349,7 +349,7 @@ describe('app.js', () => {
             .then(({ body: { locations } }) => {
               expect(locations).to.be.an('array');
               locations.forEach(location => {
-                expect(location).to.have.keys(['location_id', 'city', 'country', 'continent']);
+                expect(location).to.have.keys(['location_id', 'city', 'country', 'continent', 'image_url']);
               });
             });
         });
@@ -367,7 +367,8 @@ describe('app.js', () => {
           const postRequest = {
             city: 'Liverpool',
             country: 'United Kingdom',
-            continent: 'Europe'
+            continent: 'Europe',
+            image_url: 'http://lorempixel.com/400/400/city/'
           };
 
           return request(app)
@@ -382,14 +383,16 @@ describe('app.js', () => {
           const postRequest = {
             city: 'liveRPooL',
             country: 'uNITED kiNGdom',
-            continent: 'Europe'
+            continent: 'Europe',
+            image_url: 'http://lorempixel.com/400/400/city/'
           };
 
           const expecgtedResult = {
             location_id: 21,
             city: 'Liverpool',
             country: 'United Kingdom',
-            continent: 'Europe'
+            continent: 'Europe',
+            image_url: 'http://lorempixel.com/400/400/city/'
           };
 
           return request(app)
@@ -414,7 +417,8 @@ describe('app.js', () => {
           const postRequest = {
             city: 'Liverp@@l',
             country: 'United Kingdom',
-            continent: 'Europe'
+            continent: 'Europe',
+            image_url: 'http://lorempixel.com/400/400/city/'
           };
 
           return request(app)
@@ -442,7 +446,8 @@ describe('app.js', () => {
           const postRequest = {
             city: 'Hue',
             country: 'Vietnam',
-            continent: 'Asia'
+            continent: 'Asia',
+            image_url: 'http://lorempixel.com/400/400/city/'
           };
 
           return request(app)

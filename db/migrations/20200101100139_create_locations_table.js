@@ -3,7 +3,8 @@ exports.up = function(knex) {
     locationsTable.increments('location_id').primary();
     locationsTable.string('city').notNullable();
     locationsTable.string('country').notNullable();
-    locationsTable.string('continent');
+    locationsTable.string('continent').notNullable();
+    locationsTable.text('image_url').notNullable();
   });
 };
 
