@@ -4,7 +4,8 @@ const {
   patchReviewByID,
   deleteReviewByID,
   getCommentsByReviewID,
-  postCommentByReviewID
+  postCommentByReviewID,
+  getReviewByID
 } = require('../controllers/review-controller');
 const { handle405Errors } = require('../errors');
 
@@ -17,6 +18,7 @@ reviewRouter
   .route('/:review_id')
   .patch(patchReviewByID)
   .delete(deleteReviewByID)
+  .get(getReviewByID)
   .all(handle405Errors);
 
 reviewRouter

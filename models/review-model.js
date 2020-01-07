@@ -82,3 +82,17 @@ exports.createCommentByReviewID = (review_id, commentData) => {
 
   return connection('comments').insert({ review_id, author, comment_body }, '*');
 };
+
+exports.fetchReviewByID = review_id => {
+  review_id = /\d/.test(review_id) ? +review_id : null;
+
+  if (!review_id) return Promise.reject({ status: 400, msg: 'Please enter a valid review_id' });
+
+  return connection('reviews')
+    .first()
+    .where({ review_id })
+    .then(review => {
+      if (review === undefined) return Promise.reject({ status: 404, msg: 'Review not found' });
+      else return review;
+    });
+};
