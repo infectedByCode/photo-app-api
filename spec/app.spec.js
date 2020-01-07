@@ -150,6 +150,24 @@ describe('app.js', () => {
         });
       });
       describe('/:review_id', () => {
+        it('GET:200, returns a review by its ID', () => {
+          return request(app)
+            .get('/api/reviews/1')
+            .expect(200)
+            .then(({ body: { review } }) => {
+              expect(review).to.have.keys([
+                'review_id',
+                'review_title',
+                'review_body',
+                'image_url',
+                'vote_count',
+                'author',
+                'location_id',
+                'created_at'
+              ]);
+              expect(review.review_id).to.equal(1);
+            });
+        });
         it('PATCH:200, updates the review title and/or review body', () => {
           const patchReq = {
             review_title: 'An amazing city with brilliant views',
@@ -182,6 +200,22 @@ describe('app.js', () => {
         });
       });
       describe('ERRORS /api/reviews/:review_id', () => {
+        it('GET:400, when review_id is invalid', () => {
+          return request(app)
+            .get('/api/reviews/abc')
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Please enter a valid review_id');
+            });
+        });
+        it('GET:404, when a valid review_id is not found', () => {
+          return request(app)
+            .get('/api/reviews/999')
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).to.equal('Review not found');
+            });
+        });
         it('PATCH:400, when data contains invalid characters', () => {
           const patchReq = {
             review_title: 'An ##*!!$#^``brilliant views',
@@ -227,7 +261,7 @@ describe('app.js', () => {
             });
         });
         it('STATUS:405, when use attempts an invalid method', () => {
-          const invalidMethods = ['put', 'post', 'get'];
+          const invalidMethods = ['put', 'post'];
 
           const methodPromises = invalidMethods.map(method => {
             return request(app)
