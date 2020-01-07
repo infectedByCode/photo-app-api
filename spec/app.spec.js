@@ -476,7 +476,7 @@ describe('app.js', () => {
               expect(msg).to.equal('Missing data - Please include a city, country and continent.');
             });
         });
-        it('POST:400, when the location already exists in the db', () => {
+        it('GET:201, returns when the location already exists in the db', () => {
           const postRequest = {
             city: 'Hue',
             country: 'Vietnam',
@@ -487,10 +487,9 @@ describe('app.js', () => {
           return request(app)
             .post('/api/locations')
             .send(postRequest)
-            .expect(400)
-            .then(({ body: { msg, location_id } }) => {
-              expect(location_id).to.equal(18);
-              expect(msg).to.equal('Location already exists.');
+            .expect(201)
+            .then(({ body: { location } }) => {
+              expect(location.location_id).to.equal(18);
             });
         });
         it('STATUS:405, when use attempts an invalid method', () => {
