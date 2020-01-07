@@ -193,6 +193,22 @@
       }
     }
   },
+  "GET /api/reviews/:review_id": {
+    "description": "gets a review by its ID",
+    "queries": [],
+    "exampleResponse": {
+      "review": {
+        "review_id": 1,
+        "review_title": "An amazing city with brilliant views",
+        "review_body": "More information about the city.",
+        "image_url": "http: //lorempixel.com/400/400/city/",
+        "vote_count": 6,
+        "author": "3c9f50cb-da22-4a7d-b105-246b6f14abf4",
+        "location_id": 20,
+        "created_at": "2020-01-03T19: 55: 59.687Z"
+      }
+    }
+  },
   "PATCH /api/reviews/:review_id": {
     "description": "updates a review for a given location",
     "examplePatchRequest": {
