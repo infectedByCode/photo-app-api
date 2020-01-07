@@ -413,6 +413,22 @@ describe('app.js', () => {
               expect(location).to.eql({ ...postRequest, location_id: 21 });
             });
         });
+        it('POST:201, when valid special characters are in the name', () => {
+          const postRequest = {
+            city: 'Mariehamn',
+            country: 'Åland Islands',
+            continent: 'Europe',
+            image_url: 'http://lorempixel.com/400/400/city/'
+          };
+
+          return request(app)
+            .post('/api/locations')
+            .send(postRequest)
+            .expect(201)
+            .then(({ body: { location } }) => {
+              expect(location).to.eql({ ...postRequest, location_id: 21 });
+            });
+        });
         it('POST:201, adds a new location to DB in the correct format', () => {
           const postRequest = {
             city: 'liveRPooL',
