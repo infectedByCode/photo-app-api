@@ -1,4 +1,4 @@
-const { selectAPI } = require('../models/api-models');
+const { selectAPI } = require('../models/api-model');
 
 exports.getAPI = (req, res, next) => {
   selectAPI()
