@@ -84,7 +84,7 @@ describe('validateQuery', () => {
   });
 });
 
-describe('formatLocation', () => {
+describe.only('formatLocation', () => {
   it('returns an empty string when passed one', () => {
     expect(formatLocation('')).to.equal('');
   });
@@ -95,6 +95,11 @@ describe('formatLocation', () => {
   it('returns capitalised location data when the name is more than one word', () => {
     expect(formatLocation('united kingdom')).to.equal('United Kingdom');
     expect(formatLocation('SOUTH AMERIca')).to.equal('South America');
+  });
+  it('works for exceptions, e.g. countries with "the", "and" or "of" in their names', () => {
+    expect(formatLocation('United STATES oF AMERIca')).to.equal('United States of America');
+    expect(formatLocation('antigua and barbuda')).to.equal('Antigua and Barbuda');
+    expect(formatLocation("Côte d'Ivoire")).to.equal("Côte d'Ivoire");
   });
 });
 

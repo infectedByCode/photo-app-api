@@ -35,9 +35,15 @@ exports.validateQuery = str => {
 exports.formatLocation = str => {
   str = str.trim();
 
+  const exceptions = ['of', 'the', 'and', 'da'];
+
   return str
     .split(' ')
-    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
+    .map(word => {
+      if (word.toLowerCase() === "d'ivoire") return "d'Ivoire";
+      else if (exceptions.includes(word.toLowerCase())) return word.toLowerCase();
+      else return word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+    })
     .join(' ');
 };
 
