@@ -718,7 +718,7 @@ describe('app.js', () => {
           const patchRequest = {
             first_name: 'newfirstname',
             last_name: 'newlastname',
-            email: 'newemail@email.com'
+            username: 'newusername'
           };
 
           return request(app)
@@ -727,10 +727,9 @@ describe('app.js', () => {
             .expect(200)
             .then(({ body: { user } }) => {
               expect(user.user_id).to.equal('e40e752a-3230-4758-a118-b7f3537c1fd8');
-              expect(user.username).to.equal('Christiana74');
               expect(user.first_name).to.equal('newfirstname');
               expect(user.last_name).to.equal('newlastname');
-              expect(user.email).to.equal('newemail@email.com');
+              expect(user.username).to.equal('newusername');
             });
         });
         it('DELETE:204, removes user by their user_id', () => {
@@ -764,7 +763,7 @@ describe('app.js', () => {
             const patchRequest = {
               first_name: 'newfirstname',
               last_name: 'newlastname',
-              email: 'newemail@email.com'
+              username: 'newuser'
             };
 
             return request(app)
@@ -779,7 +778,7 @@ describe('app.js', () => {
             const patchRequest = {
               first_name: 'myn@m3!$',
               last_name: 'newlastname',
-              email: 'newemail@email.com'
+              username: 'newuser'
             };
 
             return request(app)
@@ -794,7 +793,7 @@ describe('app.js', () => {
             const patchRequest = {
               first_name: 'Pete',
               last_name: 'Chan',
-              email: 'PeteChan@gmail.com'
+              username: 'newuser'
             };
 
             return request(app)

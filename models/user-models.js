@@ -14,19 +14,15 @@ exports.fetchUserByUserID = ({ user_id }) => {
 };
 
 exports.updateUserByUserID = ({ user_id }, userData) => {
-  const { email, ...inputs } = userData;
+  // const { email, ...inputs } = userData;
   const isUUIDValid = validateUUID(user_id);
-  const isValidEmail = validateEmail(email);
-  const areInputsValid = Object.values(inputs).every(input => {
+  // const isValidEmail = validateEmail(email);
+  const areInputsValid = Object.values(userData).every(input => {
     return validateStringInput(input);
   });
 
   if (!isUUIDValid) {
     return Promise.reject({ status: 400, msg: 'Invalid input for user_id.' });
-  }
-
-  if (!isValidEmail) {
-    return Promise.reject({ status: 400, msg: 'Invalid email format.' });
   }
 
   if (!areInputsValid) {
@@ -38,7 +34,7 @@ exports.updateUserByUserID = ({ user_id }, userData) => {
 
   return connection('users')
     .where('user_id', user_id)
-    .update({ email, first_name: inputs.first_name, last_name: inputs.last_name }, '*');
+    .update({ username: userData.username, first_name: userData.first_name, last_name: userData.last_name }, '*');
 };
 
 exports.removeUserByUserID = ({ user_id }) => {
